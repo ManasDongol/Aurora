@@ -1,0 +1,223 @@
+﻿@page "/"
+
+@inject ISnackbar Snackbar
+
+<MudLayout>
+    <MudGrid>
+        <MudItem xs="12" sm="8" md="6" Style="margin:20px; ">
+            <MudCard Outlined="true" Style="display:flex;">
+                <div>
+                    <MudCardContent>
+                        <MudText>Today's Journal Entry</MudText>
+                        <MudGrid>
+                            <MudItem xs="12" sm="6" md="4">
+                                <MudTextField @bind-Value="journaltitle" Label="Title:" Variant="Variant.Text"></MudTextField>
+                                <MudTextField @bind-Value="journaltext" Label="Content:" Variant="Variant.Text" Lines="10"></MudTextField>
+                            </MudItem>
+                            <MudItem xs="12" sm="6" md="4">
+                                <MudSelect T="string" Label="Moods" MultiSelection="true" @bind-Value="_value" @bind-SelectedValues="_moods">
+                                    @foreach (var state in _states)
+                                    {
+                                        <MudSelectItem T="string" Value="@state">@state</MudSelectItem>
+                                    }
+                                </MudSelect>
+                                <MudSelect T="string" Label="Tags" MultiSelection="true" @bind-Value="_value" @bind-SelectedValues="_tags">
+                                    @foreach (var state in _states)
+                                    {
+                                        <MudSelectItem T="string" Value="@state">@state</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem>
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@(() => { addjournals();Snackbar.Add("New Journal added!", Severity.Success); })">Enter</MudButton>
+
+                            </MudItem>
+
+
+                        </MudGrid>
+
+
+                    </MudCardContent>
+                </div>
+
+
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4" Style="margin:20px">
+            <MudCard Outlined="true">
+                <div>
+
+                    <MudCardContent>
+                        <MudText Typo="Typo.h2">Streaks :  @journals.Count</MudText>
+                    </MudCardContent>
+                </div>
+            </MudCard>
+        </MudItem>
+
+
+    </MudGrid>
+</MudLayout>
+<MudText Typo="Typo.h2" Style="margin-left:20px">My Journals</MudText>
+
+
+<MudGrid>
+    @foreach (var journal in journals)
+    {
+        <MudItem xs="12" sm="6" md="5" Style="margin:20px">
+            <MudCard Outlined="true">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h4">@journal.Title</MudText>
+                        <MudText Typo="Typo.body2">@journal.DateVal.ToString()</MudText>
+                    </CardHeaderContent>
+
+                    <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText>Moods :</MudText>
+                    @foreach (var journalmood in journal.Moods)
+                    {
+                        <MudChip T="string" Variant="Variant.Text" Color="Color.Primary">@journalmood</MudChip>
+                    }
+                    <MudText>Tags :</MudText>
+                    @foreach (var journaltag in journal.Tags)
+                    {
+                        <MudChip T="string" Variant="Variant.Text" Color="Color.Secondary">@journaltag</MudChip>
+                    }
+
+
+
+                    <MudText>@journal.content</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                   
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+
+    }
+    </MudGrid>
+
+
+
+    @code{
+
+        public string journaltitle;
+
+        public string journaltext;
+
+        public string journalMoods;
+        public string journalTags;
+
+        private string _value = "Nothing selected";
+
+        private IEnumerable<string> _moods = new HashSet<string> { };
+        private IEnumerable<string> _tags = new HashSet<string> { };
+
+        public class journalcontent
+        {
+            public string Title { get; set; }
+            public string content { get; set; }
+            public DateTime DateVal = DateTime.UtcNow;
+            public List<string> Moods { get; set; }
+            public List<string> Tags { get; set; }
+        }
+
+
+
+
+        private readonly string[] _states =
+       {
+        "Happy"," Excited", "Relaxed", "Grateful", "Confident" ," Calm", "Thoughtful", "Curious", "Nostalgic", "Bored", "Sad", "Angry", "Stressed", "Lonely", "Anxious"
+    };
+
+        public static List<journalcontent> journals = new List<journalcontent>()
+{
+    new journalcontent
+    {
+        Title = "Great day at Bhrikutimandap",
+        content = "Spent an amazing day playing futsal with friends. The weather was perfect, and we even grabbed some momo afterwards. Feeling energetic and happy!",
+        Moods = new List<string> { "Happy", "Energetic", "Excited" },
+        Tags = new List<string> { "Friends", "Sports", "Outdoor", "Food" }
+    },
+    new journalcontent
+    {
+        Title = "Productive Study Session",
+        content = "Focused on my .NET MAUI project today. Managed to implement the mood selection feature and fix a few layout bugs. Feeling accomplished but a little tired.",
+        Moods = new List<string> { "Focused", "Accomplished", "Tired" },
+        Tags = new List<string> { "Study", "Coding", "MAUI", "Productivity" }
+    },
+    new journalcontent
+    {
+        Title = "Evening Walk",
+        content = "Went for a calm evening walk around the neighborhood. The sunset was beautiful and I felt relaxed. It reminded me how important small moments of peace are.",
+        Moods = new List<string> { "Calm", "Relaxed" },
+        Tags = new List<string> { "Walking", "Nature", "Self-care" }
+    },
+    new journalcontent
+    {
+        Title = "Busy Workday",
+        content = "Had back-to-back meetings at work today. Managed to complete all tasks, but feeling mentally drained. Need to rest and recharge tomorrow.",
+        Moods = new List<string> { "Stressed", "Drained" },
+        Tags = new List<string> { "Work", "Meetings", "Mental Health" }
+    },
+    new journalcontent
+    {
+        Title = "Coffee with a Friend",
+        content = "Met my friend at a local café. Had deep conversations about life and goals. Felt very motivated and inspired afterward. Great social interaction for the week.",
+        Moods = new List<string> { "Inspired", "Motivated", "Happy" },
+        Tags = new List<string> { "Friends", "Coffee", "Conversation" }
+    },
+    new journalcontent
+    {
+        Title = "Relaxing Reading Time",
+        content = "Spent the evening reading a novel I had been postponing. Lost track of time but really enjoyed the story. Felt calm and content.",
+        Moods = new List<string> { "Calm", "Content" },
+        Tags = new List<string> { "Reading", "Books", "Relaxation" }
+    },
+    new journalcontent
+    {
+        Title = "Workout Session",
+        content = "Had a solid gym session focusing on legs and core. Feeling strong and energized. Looking forward to keeping this routine consistent.",
+        Moods = new List<string> { "Energized", "Strong", "Motivated" },
+        Tags = new List<string> { "Workout", "Gym", "Health", "Routine" }
+    },
+    new journalcontent
+    {
+        Title = "Rainy Day Reflection",
+        content = "It rained heavily today. Sat by the window with a cup of tea and reflected on my goals and progress. Felt a mix of nostalgia and motivation.",
+        Moods = new List<string> { "Reflective", "Nostalgic", "Motivated" },
+        Tags = new List<string> { "Rainy Day", "Reflection", "Goals", "Tea" }
+    }
+};
+
+        public int streakcount;
+
+        public void addjournals()
+        {
+            var newJournal = new journalcontent()
+            {
+                Title = journaltitle,
+                content = journaltext,
+                Moods = _moods.ToList(),
+                Tags = _tags.ToList()
+
+            };
+
+            journals.Add(newJournal);
+
+        }
+
+        public string SelectedPrimaryMood;
+
+
+
+        //check for entry today
+
+        public Boolean streaktoday { get; set; }
+
+
+
+    }

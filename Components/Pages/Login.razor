@@ -1,0 +1,24 @@
+﻿@page "/login"
+@layout AuroraJournalingApp.Components.Layout.EmptyLayout
+
+
+
+<MudLayout Style="display:flex;justify-content:center;align-items:baseline">
+    <MudCard Style="width:500px; height:500px; margin:auto; display:flex ; flex-direction:column; justify-content:center; align-items:center" Outlined="true">
+        
+        <MudText Typo="Typo.h1">
+            Aurora
+        </MudText>
+        <div>
+            <MudTextField Style="width:400px" @bind-Value="HelperText" Label="username" Variant="Variant.Text" />
+            <MudTextField Style="width:400px" @bind-Value="HelperText" Label="password" InputType="InputType.Password" Variant="Variant.Text" />
+
+        </div>
+
+        <MudButton Style="width:80%; margin-top:40px;" Variant="Variant.Filled" Color="Color.Primary">Enter</MudButton>
+
+    </MudCard>
+</MudLayout>
+@code {
+    public string HelperText { get; set; }
+}

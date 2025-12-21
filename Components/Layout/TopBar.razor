@@ -1,0 +1,45 @@
+﻿@inject AuroraJournalingApp.Utils.DarkModeState DarkModeState
+
+<MudAppBar Color="Color.Dark" Fixed="true">
+
+    <MudIcon Icon="@Icons.Material.Filled.LibraryBooks" Title="Favorite" />    <MudText>Aurora</MudText>
+    <MudSpacer />
+    <MudMenu Dense
+             Variant="Variant.Text"
+             Size="Size.Medium"
+             Color="Color.Inherit"
+             Icon="@Icons.Material.TwoTone.Settings">
+        
+        <MudButton OnClick="@DarkModeState.ToggleDarkMode">
+            <MudIcon Icon="@Icons.Material.Filled.DarkMode" />
+            <MudText>Switch theme</MudText>
+        </MudButton>
+
+       
+
+      
+
+        <MudDivider />
+
+
+
+        <MudMenuItem Href="/login"
+                     ForceLoad
+                     Icon="@Icons.Material.TwoTone.Logout"
+                     IconColor="Color.Primary"
+                     Label="Sign Out" />
+    </MudMenu>
+
+
+
+
+</MudAppBar>
+
+@code {
+
+
+    public void switchtheme()
+    {
+
+    }
+}

@@ -1,0 +1,51 @@
+﻿@inherits LayoutComponentBase
+@inject ISnackbar Snackbar
+@inject AuroraJournalingApp.Utils.DarkModeState DarkModeState
+
+<MudThemeProvider IsDarkMode="@DarkModeState.IsDarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+
+<MudLayout>
+    <TopBar />
+
+    <MudDrawer Variant="DrawerVariant.Mini"
+               OpenMiniOnHover="true"
+               Breakpoint="Breakpoint.Md"
+               Elevation="1"
+               @bind-Open="_open">
+
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+@code {
+    private bool _open = false;
+
+    public static bool darkmodetoggler = false;
+
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+
+    protected override void OnInitialized()
+    {
+        DarkModeState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DarkModeState.OnChange -= StateHasChanged;
+    }
+
+
+
+}

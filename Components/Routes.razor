@@ -1,0 +1,11 @@
+﻿@using AuroraJournalingApp.Components.Pages;
+
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <Login />
+    </NotFound>
+</Router>
