@@ -1,16 +1,20 @@
-﻿using System;
+﻿
+using SQLite;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.Models
 {
+    [Table("Journals")]
     internal class Journal
     {
-        [Key]
-        public Guid Id { get; }
+
+        [PrimaryKey]
+        public Guid Id { get; } = Guid.NewGuid();
         public Guid UserID { get; }
 
         public string Title { get; set; }
@@ -19,9 +23,5 @@ namespace AuroraJournalingApp.Models
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Updated { get; set; }
 
-        public Journal()
-        {
-
-        }
     }
 }

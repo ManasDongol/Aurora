@@ -1,18 +1,20 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.Models
 {
+    [Table("JournalMoods")]
     internal class JournalMoods
     {
-        [Key]
+        [PrimaryKey]
 
         public Guid JournalID { get; }
-        [Key]
+        [PrimaryKey]
+
         public Guid MoodID { get; }
     }
 }
