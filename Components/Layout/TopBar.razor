@@ -1,4 +1,5 @@
 ﻿@inject AuroraJournalingApp.Utils.DarkModeState DarkModeState
+@inject NavigationManager navigation
 
 <div class="topbar">
     <div class="topbar-left">
@@ -10,10 +11,17 @@
         <button class="topbar-btn" @onclick="DarkModeState.ToggleDarkMode">
             🌙 Switch theme
         </button>
-        <a class="topbar-btn signout" href="/login">🚪 Sign Out</a>
+        <button @onclick="onsubmit" class="topbar-btn signout" >Log Out</button>
     </div>
 </div>
 
 <style>
     
 </style>
+@code{
+    public async Task onsubmit()
+    {
+        bool success = SecureStorage.Default.Remove("user");
+        navigation.NavigateTo("/login");
+        }
+}

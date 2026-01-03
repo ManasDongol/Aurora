@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuroraJournalingApp.Domain.Models
+namespace AuroraJournalingApp.Models
 {
     internal class Mood
     {

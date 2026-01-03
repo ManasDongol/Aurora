@@ -1,37 +1,137 @@
 ﻿@page "/login"
+@using AuroraJournalingApp.Models
 @layout AuroraJournalingApp.Components.Layout.EmptyLayout
-@inject AuroraJournalingApp.Data.AuroraDbService dbservice;
+@inject AuroraJournalingApp.Data.AuroraDbService dbservice
+@using Microsoft.Maui.Storage
+@inject NavigationManager navigation
+<div class="login-container">
+    <div class="login-card">
+        <h2>Login</h2>
+        <EditForm Model="userModel" OnValidSubmit="OnSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-
-<MudLayout Style="display:flex;justify-content:center;align-items:baseline">
-    <MudCard Style="width:500px; height:500px; margin:auto; display:flex ; flex-direction:column; justify-content:center; align-items:center" Outlined="true">
-        <EditForm >
-            <MudText Typo="Typo.h1">
-                Aurora
-            </MudText>
-            <div>
-                <MudTextField Style="width:400px" @bind-Value="Username" Label="username" Variant="Variant.Text" />
-                <MudTextField Style="width:400px" @bind-Value="Password" Label="password" InputType="InputType.Password" Variant="Variant.Text" />
-
+            <div class="form-group">
+                <label>Username:</label>
+                <InputText @bind-Value="Username" class="input-field" />
             </div>
 
-            <button type="submit" @onclick="onSubmit"></button>
+            <div class="form-group checkbox-group">
+                <InputCheckbox @bind-Value="usePin" class="checkbox-field" />
+                <label>Use PIN instead</label>
+            </div>
+
+            @if (!usePin)
+            {
+                <div class="form-group">
+                    <label>Password:</label>
+                    <InputText @bind-Value="Password" Type="password" class="input-field" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label>PIN:</label>
+                    <InputNumber @bind-Value="Pin" class="input-field" />
+                </div>
+            }
+
+            <button type="submit" class="login-btn">Log In</button>
         </EditForm>
-    </MudCard>
-</MudLayout>
+    </div>
+</div>
+
+<style>
+    /* Container centers the card */
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        background-color: #f0f2f5;
+        padding: 20px;
+    }
+
+    /* Card style */
+    .login-card {
+        background-color: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    /* Form groups spacing */
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    /* Inputs */
+    .input-field {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    /* Checkbox alignment */
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Submit button */
+    .login-btn {
+        width: 100%;
+        padding: 12px 0;
+        background-color: #4a90e2;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .login-btn:hover {
+            background-color: #357ab8;
+        }
+
+    /* Heading */
+    h2 {
+        margin-bottom: 25px;
+        color: #333;
+        font-family: 'Segoe UI', sans-serif;
+    }
+</style>
+
 @code {
     public string Username { get; set; }
     public string Password { get; set; }
+    public int Pin { get; set; }
+    public bool usePin { get; set; } = false;
 
-    User newuser = new User();
-    public void onSubmit()
+    User userModel = new User();
+    List<User> userlist = new List<User>();
+
+    protected override async Task OnInitializedAsync()
     {
-        newuser.Username = Username;
-        newuser.PasswordHash = Password;
-
-        
-
-
+        userlist = await dbservice.GetUsersAsync();
     }
 
+    public async Task OnSubmit()
+    {
+        userModel.Username = Username;
+        userModel.PasswordHash = Password;
+
+        await SecureStorage.Default.SetAsync("user", "verified");
+        navigation.NavigateTo("/");
+    }
 }

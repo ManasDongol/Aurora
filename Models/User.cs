@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuroraJournalingApp.Domain.Models
+namespace AuroraJournalingApp.Models
 {
     [Table("users")]
     internal class User
     {
 
         [PrimaryKey]
-        public Guid UserID { get; }=Guid.NewGuid();
-        public string Username;
-        public string PasswordHash;
-        public int pin;
-        
+        public Guid UserID { get; set; } =Guid.NewGuid();
+        public string Username { get; set; }
+        public string PasswordHash { get; set; }
+        public int pin { get; set; }
+
         //List<Journal> userJournals {  get; set; }
     }
 

@@ -1,30 +1,124 @@
-﻿<h3>Signin</h3>
+﻿@page "/signup"
+@inject AuroraJournalingApp.Data.AuroraDbService dbservice
+@inject NavigationManager navigate
+@layout AuroraJournalingApp.Components.Layout.EmptyLayout
+@using System.Diagnostics;
 
-<MudLayout Style="display:flex;justify-content:center;align-items:baseline">
-    <MudCard Style="width:500px; height:500px; margin:auto; display:flex ; flex-direction:column; justify-content:center; align-items:center" Outlined="true">
-        <EditForm>
-            <MudText Typo="Typo.h1">
-                Aurora
-            </MudText>
-            <div>
-                <MudTextField Style="width:400px" @bind-Value="Username" Label="username" Variant="Variant.Text" />
-                <MudTextField Style="width:400px" @bind-Value="Password" Label="password" InputType="InputType.Password" Variant="Variant.Text" />
+<div class="signup-container">
+    <div class="signup-card">
+        <h2>Sign Up</h2>
 
+        <EditForm Model="userModel" OnValidSubmit="OnSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label>Username:</label>
+                <InputText @bind-Value="Username" class="input-field" />
             </div>
 
-            <button type="submit" @onclick="onSubmit"></button>
+            <div class="form-group">
+                <label>Password:</label>
+                <InputText @bind-Value="Password" Type="password" class="input-field" />
+            </div>
+
+            <div class="form-group">
+                <label>PIN:</label>
+                <InputNumber @bind-Value="Pin" class="input-field" />
+            </div>
+
+            <button type="submit" class="signup-btn">Register</button>
         </EditForm>
-    </MudCard>
-</MudLayout>
+    </div>
+</div>
+
+<style>
+    /* Container centers the card */
+    .signup-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        background-color: #f0f2f5;
+        padding: 20px;
+    }
+
+    /* Card style */
+    .signup-card {
+        background-color: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    /* Form groups spacing */
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    /* Submit button */
+    .signup-btn {
+        width: 100%;
+        padding: 12px 0;
+        background-color: #4a90e2;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .signup-btn:hover {
+            background-color: #357ab8;
+        }
+
+    /* Heading */
+    h2 {
+        margin-bottom: 25px;
+        color: #333;
+        font-family: 'Segoe UI', sans-serif;
+    }
+</style>
 
 @code {
     private string Username;
     private string Password;
-    private int pin;
+    private int Pin;
+    private User userModel = new User();
 
-    public void onSubmit()
+    private async Task OnSubmit()
+    {
+        Debug.WriteLine("Submit clicked");
+        try
         {
+            userModel.Username = Username;
+            userModel.PasswordHash = Password;
+            userModel.pin = Pin;
 
+            await dbservice.AddUser(userModel);
+
+            Debug.WriteLine("User has been inserted successfully");
+            navigate.NavigateTo("/login");
         }
-
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Exception: {ex.Message}");
+            Debug.WriteLine(ex.StackTrace);
+        }
+    }
 }

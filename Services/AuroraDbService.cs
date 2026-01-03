@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AuroraJournalingApp.Domain.Models;
+using AuroraJournalingApp.Models;
 
 namespace AuroraJournalingApp.Data
 {
@@ -27,11 +27,11 @@ namespace AuroraJournalingApp.Data
             return await _connect.Table<User>().FirstOrDefaultAsync(x => x.UserID == id);
         }
 
-        public async Task AddCustomer(User user)
+        public async Task AddUser(User user)
         {
             await _connect.InsertAsync(user);
         }
-        public async Task<string> DeleteCustomerByID(Guid id)
+        public async Task<string> DeleteUserByID(Guid id)
         {
 
             var customer = await _connect

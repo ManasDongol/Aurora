@@ -71,7 +71,7 @@
     <ItemGroup>
       <Folder Include="Components\Buttons\" />
       <Folder Include="Components\Buttons\" />
-      <Folder Include="Services\" />
+      <Folder Include="Repositories\" />
     </ItemGroup>
 
     <ItemGroup>

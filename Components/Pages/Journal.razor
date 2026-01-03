@@ -1,5 +1,7 @@
 ﻿@page "/"
 
+@inject NavigationManager navigator
+
 <div class="container">
 
     <!-- Journal Entry -->
@@ -85,6 +87,19 @@
 
     private List<string> selectedMoods = new();
     private List<string> selectedTags = new();
+    protected override async Task OnInitializedAsync()
+    {
+        string oauthToken = await SecureStorage.Default.GetAsync("user");
+
+        if (oauthToken == null)
+        {
+            navigator.NavigateTo("/login");
+            // No value is associated with the key "oauth_token"
+        }
+
+    }
+
+
 
     public class journalcontent
     {
