@@ -1,0 +1,76 @@
+.container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background: white;
+}
+
+.form-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+input, textarea, select {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.primary-btn {
+    padding: 10px 16px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.section-title {
+    margin: 20px 0 10px;
+}
+
+.journal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.chip {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-right: 6px;
+}
+
+.chip-primary {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.chip-secondary {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.text-input {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+}
+
+.multi-select {
+    min-height: 120px;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}

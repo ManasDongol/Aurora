@@ -5,13 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuroraJournalingApp.Models
+namespace AuroraJournalingApp.Domain.Models
 {
-    internal class Tag
+    internal class JournalTag
+
     {
         [Key]
-        public Guid TagID { get; }
-        public string TagValue { get; set; }
-        public bool IsPreDefined { get; set; }
+
+        public Guid JournalID { get; }
+        [Key]
+        public Guid TagId { get; }
     }
 }

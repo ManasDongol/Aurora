@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuroraJournalingApp.Models
+namespace AuroraJournalingApp.Domain.Models
 {
     [Table("JournalMoods")]
     internal class JournalMoods

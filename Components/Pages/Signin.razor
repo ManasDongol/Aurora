@@ -1,11 +1,8 @@
-﻿@page "/login"
-@layout AuroraJournalingApp.Components.Layout.EmptyLayout
-@inject AuroraJournalingApp.Data.AuroraDbService dbservice;
-
+﻿<h3>Signin</h3>
 
 <MudLayout Style="display:flex;justify-content:center;align-items:baseline">
     <MudCard Style="width:500px; height:500px; margin:auto; display:flex ; flex-direction:column; justify-content:center; align-items:center" Outlined="true">
-        <EditForm >
+        <EditForm>
             <MudText Typo="Typo.h1">
                 Aurora
             </MudText>
@@ -19,19 +16,15 @@
         </EditForm>
     </MudCard>
 </MudLayout>
+
 @code {
-    public string Username { get; set; }
-    public string Password { get; set; }
+    private string Username;
+    private string Password;
+    private int pin;
 
-    User newuser = new User();
     public void onSubmit()
-    {
-        newuser.Username = Username;
-        newuser.PasswordHash = Password;
+        {
 
-        
-
-
-    }
+        }
 
 }

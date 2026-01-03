@@ -5,15 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuroraJournalingApp.Models
+namespace AuroraJournalingApp.Domain.Models
 {
-    internal class User
+    internal class Mood
     {
-
         [Key]
-        public Guid UserID;
-        public string Username;
-        public string PasswordHash;
-        public int pin;
+        public Guid MoodID { get; }
+        public string MoodValue { get; set; }
     }
 }

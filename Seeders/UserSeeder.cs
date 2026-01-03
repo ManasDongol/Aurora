@@ -9,7 +9,6 @@ namespace AuroraJournalingApp.Seeders
 {
     internal class UserSeeder
     {
-        DatabaseAccess db;
-
+      
     }
 }

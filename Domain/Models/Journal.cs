@@ -1,20 +1,20 @@
-﻿
-using SQLite;
+﻿using SQLite;
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuroraJournalingApp.Models
+namespace AuroraJournalingApp.Domain.Models
 {
-    [Table("Journals")]
+   
     internal class Journal
     {
 
-        [PrimaryKey]
+    
         public Guid Id { get; } = Guid.NewGuid();
+
         public Guid UserID { get; }
 
         public string Title { get; set; }

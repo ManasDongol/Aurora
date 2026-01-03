@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using MudBlazor;
 using MudBlazor.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace AuroraJournalingApp
 {
@@ -21,12 +20,12 @@ namespace AuroraJournalingApp
                 });
             builder.Services.AddMudServices();
             builder.Services.AddMauiBlazorWebView();
-            builder.Services.AddSingleton<DatabaseAccess>();
 
 
-    
+
             builder.Services.AddScoped<Snackbar>();
             builder.Services.AddScoped<DarkModeState>();
+            builder.Services.AddSingleton<AuroraDbService>();
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();
