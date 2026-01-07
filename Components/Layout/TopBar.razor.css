@@ -44,7 +44,10 @@
 }
 
 .topbar-btn.signout {
-    color: red;
+    color: white;
+    background-color:red;
+    padding:20px;
+    border-radius:5px;
     text-decoration: none;
 }
 

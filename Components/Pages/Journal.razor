@@ -89,12 +89,13 @@
     private List<string> selectedTags = new();
     protected override async Task OnInitializedAsync()
     {
-        string oauthToken = await SecureStorage.Default.GetAsync("user");
+        string oauthToken = await SecureStorage.Default.GetAsync("Username");
+
 
         if (oauthToken == null)
         {
-            navigator.NavigateTo("/login");
-            // No value is associated with the key "oauth_token"
+            navigator.NavigateTo("/signup");
+            
         }
 
     }

@@ -42,7 +42,7 @@
 </div>
 
 <style>
-    /* Container centers the card */
+    
     .login-container {
         display: flex;
         justify-content: center;
@@ -52,7 +52,7 @@
         padding: 20px;
     }
 
-    /* Card style */
+    
     .login-card {
         background-color: #ffffff;
         padding: 30px 40px;
@@ -64,7 +64,7 @@
         text-align: center;
     }
 
-    /* Form groups spacing */
+  
     .form-group {
         margin-bottom: 20px;
         text-align: left;
@@ -123,15 +123,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        userlist = await dbservice.GetUsersAsync();
+        //userlist = await dbservice.GetUsersAsync();
     }
 
     public async Task OnSubmit()
     {
-        userModel.Username = Username;
-        userModel.PasswordHash = Password;
 
-        await SecureStorage.Default.SetAsync("user", "verified");
-        navigation.NavigateTo("/");
+        var User = await SecureStorage.GetAsync("Username");
+        var Pass = await SecureStorage.GetAsync("Password");
+
+        if (Username == User && Password == Pass)
+        {
+            navigation.NavigateTo("/");
+        } else {
+            navigation.NavigateTo("/signup");
+        }
     }
 }

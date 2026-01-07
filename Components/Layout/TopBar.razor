@@ -9,7 +9,7 @@
 
     <div class="topbar-right">
         <button class="topbar-btn" @onclick="DarkModeState.ToggleDarkMode">
-            🌙 Switch theme
+             Switch theme
         </button>
         <button @onclick="onsubmit" class="topbar-btn signout" >Log Out</button>
     </div>
@@ -21,7 +21,9 @@
 @code{
     public async Task onsubmit()
     {
-        bool success = SecureStorage.Default.Remove("user");
-        navigation.NavigateTo("/login");
-        }
+        SecureStorage.Default.Remove("Username");
+        SecureStorage.Default.Remove("Password");
+        SecureStorage.Default.Remove("Pin");
+        navigation.NavigateTo("/signup");
+    }
 }

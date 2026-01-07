@@ -112,6 +112,10 @@
 
             await dbservice.AddUser(userModel);
 
+            await SecureStorage.Default.SetAsync("Username", Username);
+            await SecureStorage.Default.SetAsync("Pin", Pin.ToString());
+            await SecureStorage.Default.SetAsync("Password", Password);
+
             Debug.WriteLine("User has been inserted successfully");
             navigate.NavigateTo("/login");
         }
