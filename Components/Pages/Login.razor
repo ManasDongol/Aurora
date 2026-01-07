@@ -132,11 +132,14 @@
         var User = await SecureStorage.GetAsync("Username");
         var Pass = await SecureStorage.GetAsync("Password");
 
-        if (Username == User && Password == Pass)
+        if (Username.Equals(User) && Password.Equals(Pass))
         {
-            navigation.NavigateTo("/");
+            
+            await SecureStorage.Default.SetAsync("loggedin","authorized");
+            navigation.NavigateTo("/home");
         } else {
-            navigation.NavigateTo("/signup");
+            
+            navigation.NavigateTo("/login");
         }
     }
 }

@@ -21,9 +21,7 @@
 @code{
     public async Task onsubmit()
     {
-        SecureStorage.Default.Remove("Username");
-        SecureStorage.Default.Remove("Password");
-        SecureStorage.Default.Remove("Pin");
-        navigation.NavigateTo("/signup");
+        await SecureStorage.Default.SetAsync("loggedin","unauthorized");
+        navigation.NavigateTo("/login");
     }
 }

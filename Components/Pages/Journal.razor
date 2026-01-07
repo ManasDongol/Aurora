@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/home"
 
 @inject NavigationManager navigator
 
@@ -89,14 +90,18 @@
     private List<string> selectedTags = new();
     protected override async Task OnInitializedAsync()
     {
-        string oauthToken = await SecureStorage.Default.GetAsync("Username");
+        string oauthToken = await SecureStorage.Default.GetAsync("loggedin");
 
 
         if (oauthToken == null)
         {
             navigator.NavigateTo("/signup");
-            
         }
+        else if (oauthToken == "unauthorized")
+        {
+            navigator.NavigateTo("/login");
+        }
+
 
     }
 
