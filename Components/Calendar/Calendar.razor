@@ -1,0 +1,12 @@
+﻿@using Syncfusion.Blazor.Calendars
+
+<h3>Calendar</h3>
+
+
+<SfCalendar TValue="DateTime" @bind-Value="selectedDate" Max="@MaxDate"/>
+<span >@selectedDate</span>
+
+@code {
+    private DateTime selectedDate = DateTime.Today;
+    public DateTime MaxDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+}

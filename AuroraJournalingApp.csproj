@@ -66,6 +66,13 @@
         <PackageReference Include="MudBlazor.ThemeManager" Version="3.0.0" />
         <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
+        <PackageReference Include="Syncfusion.Blazor.Calendars" Version="32.1.22" />
+        <PackageReference Include="Syncfusion.Blazor.Core" Version="32.1.22" />
+        <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="32.1.22" />
+        <PackageReference Include="Syncfusion.Blazor.Themes" Version="32.1.22" />
+        <PackageReference Include="Syncfusion.Maui.Calendar" Version="32.1.22" />
+        <PackageReference Include="Syncfusion.Maui.Core" Version="32.1.22" />
+        <PackageReference Include="Syncfusion.Maui.RichTextEditor" Version="32.1.22" />
     </ItemGroup>
 
     <ItemGroup>

@@ -4,13 +4,7 @@
     margin: auto;
 }
 
-.card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 20px;
-    background: var(--surface-color)
-}
+
 
 .form-group {
     margin-bottom: 12px;
@@ -18,10 +12,7 @@
     flex-direction: column;
 }
 
-input, textarea, select {
-    padding: 8px;
-    font-size: 14px;
-}
+
 
 .primary-btn {
     padding: 10px 16px;
@@ -61,7 +52,7 @@ input, textarea, select {
 }
 
 .text-input {
-    border: 1px solid #ccc;
+   
     border-radius: 6px;
     padding: 10px;
     font-size: 14px;
