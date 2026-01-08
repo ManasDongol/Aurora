@@ -1,6 +1,6 @@
 ﻿@inject AuroraJournalingApp.Utils.DarkModeState DarkModeState
 @inject NavigationManager navigation
-
+@inject IJSRuntime JS
 <div class="topbar">
     <div class="topbar-left">
         <span class="topbar-logo">📚</span>
@@ -8,7 +8,7 @@
     </div>
 
     <div class="topbar-right">
-        <button class="topbar-btn" @onclick="DarkModeState.ToggleDarkMode">
+        <button class="topbar-btn" @onclick="toggleDarkMode">
              Switch theme
         </button>
         <button @onclick="onsubmit" class="topbar-btn signout" >Log Out</button>
@@ -19,9 +19,21 @@
     
 </style>
 @code{
+    public bool isDark;
     public async Task onsubmit()
     {
         await SecureStorage.Default.SetAsync("loggedin","unauthorized");
         navigation.NavigateTo("/login");
+    }
+    async Task toggleDarkMode()
+    {
+        isDark = !isDark;
+
+        await JS.InvokeVoidAsync(
+            "document.body.setAttribute",
+            "data-theme",
+            isDark ? "dark" : "light"
+        );
+
     }
 }

@@ -3,12 +3,12 @@
     min-width: 180px; /* sidebar width */
     margin-right: auto;
     border: 1px solid #bbb; /* subtle grey border */
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1); /* softer, spread-out shadow */
+    /* softer, spread-out shadow */
     border-radius: 4px; /* optional slight curve for modern look */
     position: fixed; /* fix to left side */
     top: 0; /* start from top */
     left: 0;
-    background-color: white; /* clean white background */
+    background-color: var(--surface-color); /* clean white background */
     z-index: 1000; /* stays above content */
     color:black;
 }
@@ -26,7 +26,6 @@
 }
 
     .nav-link:hover {
-        background-color: black;
-        color: white;
-
+        background-color: var(--navbarhover-color);
+        color: var(--navbarhovertext-color);
     }

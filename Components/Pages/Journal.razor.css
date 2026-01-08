@@ -9,7 +9,7 @@
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
-    background: white;
+    background: var(--surface-color)
 }
 
 .form-group {
