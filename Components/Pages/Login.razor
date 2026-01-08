@@ -5,7 +5,7 @@
 @using Microsoft.Maui.Storage
 @inject NavigationManager navigation
 <div class="login-container">
-    <div class="login-card">
+    <div class="card">
         <h2>Login</h2>
         <EditForm Model="userModel" OnValidSubmit="OnSubmit">
             <DataAnnotationsValidator />
@@ -47,22 +47,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 80vh;
-        background-color: #f0f2f5;
+       height:100vh;
+        background-color: var(--bg-color);
         padding: 20px;
     }
 
-    
-    .login-card {
-        background-color: #ffffff;
-        padding: 30px 40px;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        width: 100%;
-        max-width: 400px;
-        box-sizing: border-box;
-        text-align: center;
-    }
+  
 
   
     .form-group {
