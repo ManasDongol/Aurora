@@ -78,7 +78,7 @@
     <ItemGroup>
       <Folder Include="Components\Buttons\" />
       <Folder Include="Components\Buttons\" />
-      <Folder Include="Repositories\" />
+      <Folder Include="wwwroot\fonts\" />
     </ItemGroup>
 
     <ItemGroup>

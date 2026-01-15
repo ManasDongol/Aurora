@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNetCore.Components
+
+<section class="card journal-card">
+    <h2 class="card-title">Today's Journal Entry</h2>
+
+    <EditForm Model="@dto" OnValidSubmit="PrintJournal">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <!-- Title -->
+        <div class="form-group">
+            <label class="label">Title</label>
+            <input class="text-input title-input"
+                   placeholder="Give today a title…"
+                   @bind="dto.title" />
+        </div>
+
+        <!-- Body -->
+        <div class="form-group">
+            <label class="label">Body</label>
+            <AuroraJournalingApp.Components.RichTextEditor.RichTextEditor @bind-Value="dto.content" />
+        </div>
+
+        <!-- MOODS DROPDOWN -->
+        <label class="label">Moods</label>
+        <div class="dropdown @(isMoodOpen ? "open" : "")">
+            <div class="dropdown-btn" @onclick="ToggleMood">
+                <span class="selected-text">
+                    @(selectedMoods.Any()
+                        ? string.Join(", ", selectedMoods)
+                        : "Select moods (max 3)")
+                </span>
+            </div>
+
+            <div class="dropdown-content">
+                @foreach (var mood in MoodOptions)
+                {
+                    <label>
+                        <input type="checkbox"
+                               checked="@selectedMoods.Contains(mood)"
+                               @onchange="() => ToggleMoodSelection(mood)" />
+                        @mood
+                    </label>
+                }
+            </div>
+        </div>
+
+        <!-- TAGS DROPDOWN -->
+        <label class="label">Tags</label>
+        <div class="dropdown @(isTagOpen ? "open" : "")">
+            <div class="dropdown-btn" @onclick="ToggleTag">
+                <span class="selected-text">
+                    @(selectedTags.Any()
+                        ? string.Join(", ", selectedTags)
+                        : "Select tags (max 5)")
+                </span>
+            </div>
+
+            <div class="dropdown-content">
+                @foreach (var tag in TagOptions)
+                {
+                    <label>
+                        <input type="checkbox"
+                               checked="@selectedTags.Contains(tag)"
+                               @onchange="() => ToggleTagSelection(tag)" />
+                        @tag
+                    </label>
+                }
+            </div>
+        </div>
+
+        <!-- SAVE -->
+        <div class="actions">
+            <button class="primary-btn" type="submit">
+                Save Entry
+            </button>
+        </div>
+    </EditForm>
+</section>
+
+@code {
+    // ───────────── STATE ─────────────
+    bool isMoodOpen;
+    bool isTagOpen;
+
+    List<string> selectedMoods = new();
+    List<string> selectedTags = new();
+
+    public JournalDTO dto = new();
+
+    // ───────────── OPTIONS ─────────────
+    readonly string[] MoodOptions =
+    {
+        "Happy","Calm","Excited","Sad","Angry","Anxious"
+    };
+
+    readonly string[] TagOptions =
+    {
+        "Study","Work","Family","Health","Friends","Sports","Games"
+    };
+
+    // ───────────── TOGGLES ─────────────
+    void ToggleMood()
+    {
+        isMoodOpen = !isMoodOpen;
+        isTagOpen = false;
+    }
+
+    void ToggleTag()
+    {
+        isTagOpen = !isTagOpen;
+        isMoodOpen = false;
+    }
+
+    // ───────────── SELECTION LOGIC ─────────────
+    void ToggleMoodSelection(string mood)
+    {
+        if (selectedMoods.Contains(mood))
+            selectedMoods.Remove(mood);
+        else if (selectedMoods.Count < 3)
+            selectedMoods.Add(mood);
+    }
+
+    void ToggleTagSelection(string tag)
+    {
+        if (selectedTags.Contains(tag))
+            selectedTags.Remove(tag);
+        else if (selectedTags.Count < 5)
+            selectedTags.Add(tag);
+    }
+
+    // ───────────── SAVE ─────────────
+    void PrintJournal()
+    {
+        Console.WriteLine(dto.title);
+        Console.WriteLine(dto.content);
+        Console.WriteLine(string.Join(", ", selectedMoods));
+        Console.WriteLine(string.Join(", ", selectedTags));
+    }
+}

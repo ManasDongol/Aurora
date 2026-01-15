@@ -1,9 +1,12 @@
 ﻿using AuroraJournalingApp.Data;
+using AuroraJournalingApp.Repositories;
+using AuroraJournalingApp.Services;
 using AuroraJournalingApp.Utils;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using MudBlazor;
 using MudBlazor.Services;
+using SQLite;
 using Syncfusion.Blazor;
 using Syncfusion.Licensing;
 using Syncfusion.Maui.Core.Hosting;
@@ -32,7 +35,11 @@ namespace AuroraJournalingApp
 
             builder.Services.AddScoped<Snackbar>();
             builder.Services.AddScoped<DarkModeState>();
-            builder.Services.AddSingleton<AuroraDbService>();
+            builder.Services.AddSingleton<AuroraDbContext>();
+            builder.Services.AddScoped<SQLiteAsyncConnection>();
+            builder.Services.AddScoped<JournalRepository>();
+            builder.Services.AddScoped<JournalService>();
+            
 
 #if DEBUG
     		builder.Services.AddBlazorWebViewDeveloperTools();

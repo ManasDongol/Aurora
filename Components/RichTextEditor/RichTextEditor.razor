@@ -1,8 +1,16 @@
 ﻿@using Syncfusion.Blazor.RichTextEditor
 
-<SfRichTextEditor>
-    <p>sdfsdfdsfsdfsdfsdf</p>
-</SfRichTextEditor>
-@code {
+<SfRichTextEditor @bind-Value="Value" Placeholder="Type something">
 
+</SfRichTextEditor>
+<style>
+    .e-richtexteditor {
+        background-color:black;
+    }
+</style>
+@code {
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
 }

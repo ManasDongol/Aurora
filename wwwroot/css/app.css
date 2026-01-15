@@ -1,4 +1,6 @@
-﻿
+﻿/* =====================================================
+   THEME VARIABLES
+   ===================================================== */
 
 :root {
     --bg-color: #ffffff;
@@ -14,6 +16,9 @@
     --link-color: #006bb7;
     --navbarhover-color: #1e1e1e;
     --navbarhovertext-color: #ffffff;
+    --bluebutton-color: #39b8b1;
+    --negative-color: #ff145f;
+    --negative-hover: #4f2835;
 }
 
 body[data-theme="dark"] {
@@ -30,136 +35,204 @@ body[data-theme="dark"] {
     --link-color: #60a5fa;
     --navbarhover-color: #ffffff;
     --navbarhovertext-color: #1e1e1e;
+    --bluebutton-color: #39b8b1;
+    --negative-color: #ff145f;
+    --negative-hover: #4f2835;
 }
 
-/* =========================
-   GLOBAL BASE STYLES
-   ========================= */
+/* =====================================================
+   BASE
+   ===================================================== */
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'outfit-medium', Arial, sans-serif; 
     background-color: var(--bg-color);
     color: var(--text-color);
+    margin: 0;
+    height:100%;
 }
 
-/* =========================
+@font-face {
+    font-family: 'outfit-medium';
+    src: url('../fonts/Outfit-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'outfit-bold';
+    src: url('../fonts/Outfit-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'outfit-semibold';
+    src: url('../fonts/Outfit-SemiBold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'outfit-light';
+    src: url('../fonts/Outfit-Light.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* =====================================================
    LINKS & BUTTONS
-   ========================= */
+   ===================================================== */
 
 a, .btn-link {
+    font-family: 'outfit-light',Arial;
     color: var(--link-color);
 }
 
-.btn-primary {
-    color: #fff;
+.primary-btn {
+    padding: 6px 14px;
+    border-radius: 1px;
+    font-family: 'outfit-light',Arial;
+    border: none;
     background-color: var(--primary-color);
-    border-color: var(--primary-hover);
+    color: #fff;
+    font-weight: 400;
+    cursor: pointer;
 }
 
-    .btn-primary:hover {
+    .primary-btn:hover {
         background-color: var(--primary-hover);
     }
 
-/* Focus styles */
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem var(--bg-color), 0 0 0 0.25rem var(--focus-ring);
+.negative-button {
+    padding: 6px 14px;
+    border-radius: 1px;
+    font-family: 'outfit-light',Arial;
+    border: none;
+    background-color: var(--negative-color);
+    color: #fff;
+    font-weight: 400;
+    cursor: pointer;
 }
 
-/* =========================
-   LAYOUT
-   ========================= */
-
-.content {
-    padding-top: 1.1rem;
+.negative-btn:hover {
+    background-color: var(--negative-hover);
 }
-
-h1:focus {
-    outline: none;
+.bluebutton {
+    padding: 6px 14px;
+    font-family: 'outfit-light',Arial;
+    border-radius: 1px;
+    border: none;
+    background-color: var(--bluebutton-color);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
 }
-
-/* =========================
-   FORMS & VALIDATION
-   ========================= */
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid var(--success-color);
-}
-
-.invalid {
-    outline: 1px solid var(--error-color);
-}
-
-.validation-message {
-    color: var(--error-color);
-}
-
-.darker-border-checkbox.form-check-input {
-    border-color: var(--border-color);
-}
-
-/* Floating labels */
-.form-floating > .form-control-plaintext::placeholder,
-.form-floating > .form-control::placeholder {
-    color: var(--muted-text);
-    text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder,
-.form-floating > .form-control:focus::placeholder {
-    text-align: start;
-}
-
-/* =========================
-   ERROR UI (INTENTIONALLY LIGHT)
-   ========================= */
-
-#blazor-error-ui {
-    color-scheme: light only;
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
-
-.blazor-error-boundary {
-    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDki...) no-repeat 1rem/1.8rem, #b32121;
-    padding: 1rem 1rem 1rem 3.7rem;
-    color: white;
-}
-
-    .blazor-error-boundary::after {
-        content: "An error has occurred.";
-    }
-
-
-input, textarea, select {
-    padding: 8px;
-    font-size: 14px;
-    background-color: var(--bg-color);
-    border:1px solid var(--surface-color);
-}
+/* =====================================================
+   CARDS
+   ===================================================== */
 
 .card {
+    background-color: var(--surface-color);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 20px;
-    background: var(--surface-color)
+    border-radius: 3px;
+    padding: 24px;
+    margin-bottom: 24px;
+
+}
+
+/* =====================================================
+   FORM LAYOUT
+   ===================================================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+input,
+textarea,
+select,
+.text-input {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius:1px;
+    padding: 12px 14px;
+    font-size: 14px;
+}
+
+    input:focus,
+    textarea:focus,
+    select:focus,
+    .text-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px var(--focus-ring);
+    }
+
+::placeholder {
+    color: var(--muted-text);
+}
+
+
+.title-input {
+    height: 44px;
+    font-weight: 500;
+}
+
+.journal-textarea {
+    min-height: 220px;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+/* =====================================================
+   MULTI-SELECT
+   ===================================================== */
+
+.multi-select {
+    min-height: 140px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 8px;
+}
+
+    .multi-select option {
+        padding: 6px;
+    }
+
+        .multi-select option:checked {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 28px;
+}
+
+
+.label{
+    margin-top:5px;
+    margin-bottom:5px;
 }

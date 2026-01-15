@@ -12,10 +12,10 @@ namespace AuroraJournalingApp.Models
     {
         [PrimaryKey]
 
-        public Guid JournalID { get; }
+        public string JournalID { get; }
         [PrimaryKey]
 
-        public Guid MoodID { get; }
+        public string MoodID { get; }
     }
 }
 

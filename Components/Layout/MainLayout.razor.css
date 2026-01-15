@@ -1,3 +1,10 @@
+body, html {
+    
+    margin: 0;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+}
 .topbar {
     position: fixed;
     top: 0;
@@ -7,6 +14,7 @@
     background-color: var(--topbar-bg);
     color: var(--topbar-text);
     z-index: 1001;
+    
 }
 
 .sidebar {
@@ -14,12 +22,12 @@
     top: 56px; /* start below top bar */
     left: 0;
     bottom: 0;
-   
     background-color: var(--sidebar-bg);
     color: var(--sidebar-text);
     border-right: 1px solid black;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     z-index: 1000;
+    height: 900px;
 }
 
 .mainContent {
@@ -27,5 +35,7 @@
     margin-top: 56px; /* height of topbar */
     /*padding: 1rem;*/
     background-color: var(--bg-color);
+    height: 100vh;
     color: var( --text-color);
+    padding-top:28px;
 }

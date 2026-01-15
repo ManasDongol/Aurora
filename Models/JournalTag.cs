@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace AuroraJournalingApp.Models
     internal class JournalTag
 
     {
-        [Key]
+        [PrimaryKey]
 
-        public Guid JournalID { get; }
-        [Key]
-        public Guid TagId { get; }
+        public string JournalID { get; set; } 
+        [PrimaryKey]
+        public string TagId { get; set; }
     }
 }

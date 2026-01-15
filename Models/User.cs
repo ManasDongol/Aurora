@@ -13,10 +13,11 @@ namespace AuroraJournalingApp.Models
     {
 
         [PrimaryKey]
-        public Guid UserID { get; set; } =Guid.NewGuid();
+        public string UserID { get; set; } =Guid.NewGuid().ToString();
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public int pin { get; set; }
+        public string email { get; set; }
         
 
         //List<Journal> userJournals {  get; set; }

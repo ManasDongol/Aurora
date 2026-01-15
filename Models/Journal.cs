@@ -9,19 +9,26 @@ using System.Threading.Tasks;
 namespace AuroraJournalingApp.Models
 {
    
-    internal class Journal
+    public class Journal
     {
 
-    
-        public Guid Id { get; } = Guid.NewGuid();
+        [PrimaryKey]
+        public string JournalId { get; } = Guid.NewGuid().ToString();
 
-        public Guid UserID { get; }
 
+        [NotNull]
         public string Title { get; set; }
+        [NotNull]
         public string Content { get; set; }
-        public bool IsUpdated { get; set; }
+
+        [NotNull]
+        public string primaryMood { get; set; }
+        public string secondaryMoods { get; set; }
+        [NotNull]
+        public string tags { get; set; }
+        public bool IsUpdated { get; set; } = false;
         public DateTime Created { get; set; } = DateTime.Now;
-        public DateTime Updated { get; set; }
+        public DateTime? Updated { get; set; }
 
     }
 }

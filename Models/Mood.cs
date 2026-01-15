@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace AuroraJournalingApp.Models
 {
     internal class Mood
     {
-        [Key]
-        public Guid MoodID { get; }
+        [PrimaryKey]
+        public string MoodID { get; } = Guid.NewGuid().ToString();
         public string MoodValue { get; set; }
     }
 }

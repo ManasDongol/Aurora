@@ -1,12 +1,12 @@
-﻿@page "/login"
+﻿@page "/"
 @using AuroraJournalingApp.Models
 @layout AuroraJournalingApp.Components.Layout.EmptyLayout
-@inject AuroraJournalingApp.Data.AuroraDbService dbservice
+@inject AuroraJournalingApp.Data.AuroraDbContext dbservice
 @using Microsoft.Maui.Storage
 @inject NavigationManager navigation
 <div class="login-container">
-    <div class="card">
-        <h2>Login</h2>
+    <div class="card" style="min-width:400px;">
+        <h2> Welcome Back !</h2>
         <EditForm Model="userModel" OnValidSubmit="OnSubmit">
             <DataAnnotationsValidator />
             <ValidationSummary />
@@ -36,70 +36,14 @@
                 </div>
             }
 
-            <button type="submit" class="login-btn">Log In</button>
+            <button type="submit" class="bluebutton">Log In</button>
         </EditForm>
     </div>
 </div>
 
 <style>
     
-    .login-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-       height:100vh;
-        background-color: var(--bg-color);
-        padding: 20px;
-    }
-
   
-
-  
-    .form-group {
-        margin-bottom: 20px;
-        text-align: left;
-    }
-
-    /* Inputs */
-    .input-field {
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-
-    /* Checkbox alignment */
-    .checkbox-group {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /* Submit button */
-    .login-btn {
-        width: 100%;
-        padding: 12px 0;
-        background-color: #4a90e2;
-        color: white;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-        .login-btn:hover {
-            background-color: #357ab8;
-        }
-
-    /* Heading */
-    h2 {
-        margin-bottom: 25px;
-        color: #333;
-        font-family: 'Segoe UI', sans-serif;
-    }
 </style>
 
 @code {
@@ -116,6 +60,17 @@
         //userlist = await dbservice.GetUsersAsync();
     }
 
+
+    protected async override void OnInitialized()
+    {
+        string oauthToken = await SecureStorage.Default.GetAsync("loggedin");
+
+
+        if (oauthToken == null)
+        {
+            navigation.NavigateTo("/signup");
+        }
+    }
     public async Task OnSubmit()
     {
 
@@ -124,11 +79,11 @@
 
         if (Username.Equals(User) && Password.Equals(Pass))
         {
-            
+
             await SecureStorage.Default.SetAsync("loggedin","authorized");
             navigation.NavigateTo("/home");
         } else {
-            
+
             navigation.NavigateTo("/login");
         }
     }

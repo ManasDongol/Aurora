@@ -1,0 +1,60 @@
+﻿.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--bg-color);
+    padding: 20px;
+    color: var(--text-color);
+}
+
+
+
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Inputs */
+.input-field {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+/* Checkbox alignment */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.login-btn {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #4a90e2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .login-btn:hover {
+        background-color: #357ab8;
+    }
+
+/* Heading */
+h2 {
+    margin-bottom: 25px;
+    color: var(--text-color);
+    font-family: 'Segoe UI', sans-serif;
+}

@@ -1,5 +1,5 @@
 .sidebar {
-    height: 100vh; /* full viewport height */
+ /* full viewport height */
     min-width: 180px; /* sidebar width */
     margin-right: auto;
     border: 1px solid var(--border-color); /* subtle grey border */
@@ -11,6 +11,7 @@
     background-color: var(--surface-color); /* clean white background */
     z-index: 1000; /* stays above content */
     color: var(--text-color);
+    height:100vh;
 }
 
 .nav-link {

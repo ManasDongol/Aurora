@@ -1,0 +1,10 @@
+﻿.e-richtexteditor .e-rte-content,
+.e-richtexteditor .e-source-content {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+/* To change font color for toolbar icon */
+.e-richtexteditor .e-rte-toolbar .e-toolbar-item .e-icons,
+.e-richtexteditor .e-rte-toolbar .e-toolbar-item .e-icons:active {
+    color: red;
+}

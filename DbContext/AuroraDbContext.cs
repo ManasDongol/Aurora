@@ -8,35 +8,36 @@ using AuroraJournalingApp.Models;
 
 namespace AuroraJournalingApp.Data
 {
-    internal class AuroraDbService
+    internal class AuroraDbContext
     {
-        private const string DB_NAME = "Aurora.db3";
-        private SQLiteAsyncConnection _connect;
-        public AuroraDbService()
+        private const string DB_NAME = "AuroraApp.db3";
+        public  SQLiteAsyncConnection _connect { get; init; }
+        public AuroraDbContext()
         {
             _connect = new SQLiteAsyncConnection(Path.Combine(FileSystem.AppDataDirectory, DB_NAME));
-            _connect.CreateTableAsync<User>();
+            _connect.CreateTableAsync<User>().Wait();
+            _connect.CreateTableAsync<Journal>().Wait();
         }
 
         public async Task<List<User>> GetUsersAsync()
         {
             return await _connect.Table<User>().ToListAsync();
         }
-        public async Task<User> GetCustomerByID(Guid id)
+        public async Task<User> GetCustomerByID(string id)
         {
-            return await _connect.Table<User>().FirstOrDefaultAsync(x => x.UserID == id);
+            return await _connect.Table<User>().FirstOrDefaultAsync(x => x.UserID.Equals(id));
         }
 
         public async Task AddUser(User user)
         {
             await _connect.InsertAsync(user);
         }
-        public async Task<string> DeleteUserByID(Guid id)
+        public async Task<string> DeleteUserByID(string id)
         {
 
             var customer = await _connect
           .Table<User>()
-          .FirstOrDefaultAsync(x => x.UserID == id);
+          .FirstOrDefaultAsync(x => x.UserID.Equals(id));
 
             if (customer == null)
             {

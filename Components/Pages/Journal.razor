@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿
 @page "/home"
 @using AuroraJournalingApp.Components.Calendar
 @using AuroraJournalingApp.Components.RichTextEditor
@@ -6,90 +6,14 @@
 @inject NavigationManager navigator
 
 <div class="container">
-
-    <!-- Journal Entry -->
     @if (_ready)
     {
-        <section class="card">
-            <RichTextEditor />
-        </section>
-        <section class="card">
-            <Calendar />
-        </section>
+       
+      
     }
-        <section class="card">
-            <h2>Today's Journal Entry</h2>
-
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" placeholder="Enter title..."
-                       @bind="journaltitle"
-                       class="text-input" />
-            </div>
-
-            <div class="form-group">
-                <label>Content</label>
-                <textarea rows="8" placeholder="Enter title..."
-                          @bind="journaltext"
-                          class="text-input"></textarea>
-            </div>
-
-            <select multiple class="multi-select">
-                @foreach (var state in _states)
-                {
-                    <option value="@state">@state</option>
-                }
-            </select>
-
-            <select multiple class="multi-select">
-                @foreach (var state in _states)
-                {
-                    <option value="@state">@state</option>
-                }
-            </select>
-
-            <button class="primary-btn" @onclick="AddJournal">
-                Enter
-            </button>
-        </section>
-
-        <!-- Streak -->
-        <section class="card streak">
-            <h2>Streaks: @journals.Count</h2>
-        </section>
-
-        <h2 class="section-title">My Journals</h2>
-
-        <!-- Journal List -->
-        <section class="journal-grid">
-            @foreach (var journal in journals)
-            {
-                <article class="card journal-card">
-                    <header>
-                        <h3>@journal.Title</h3>
-                        <small>@journal.DateVal.ToString("dd MMM yyyy")</small>
-                    </header>
-
-                    <div class="chip-group">
-                        <strong>Moods:</strong>
-                        @foreach (var mood in journal.Moods)
-                        {
-                            <span class="chip chip-primary">@mood</span>
-                        }
-                    </div>
-
-                    <div class="chip-group">
-                        <strong>Tags:</strong>
-                        @foreach (var tag in journal.Tags)
-                        {
-                            <span class="chip chip-secondary">@tag</span>
-                        }
-                    </div>
-
-                    <p>@journal.content</p>
-                </article>
-            }
-        </section>
+      
+     <AuroraJournalingApp.Components.Cards.AddJournalCard/>
+    
 
     </div>
 @code {
@@ -108,7 +32,7 @@
         {
             navigator.NavigateTo("/signup");
         }
-        else if (oauthToken == "unauthorized")
+        if (oauthToken == "unauthorized")
         {
             navigator.NavigateTo("/login");
         }
