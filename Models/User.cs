@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AuroraJournalingApp.Models
 {
     [Table("users")]
-    internal class User
+    public class User
     {
 
         [PrimaryKey]

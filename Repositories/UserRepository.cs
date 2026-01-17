@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.Repositories
 {
-    internal class UserRepository(SQLiteAsyncConnection _db)
+    public class UserRepository(SQLiteAsyncConnection _db)
     {
      
 

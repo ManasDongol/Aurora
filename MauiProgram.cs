@@ -39,10 +39,12 @@ namespace AuroraJournalingApp
             builder.Services.AddScoped<SQLiteAsyncConnection>();
             builder.Services.AddScoped<JournalRepository>();
             builder.Services.AddScoped<JournalService>();
-            
+            builder.Services.AddScoped<UserRepository>();
+            builder.Services.AddScoped<UserService>();
+
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 

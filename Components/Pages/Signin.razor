@@ -1,5 +1,5 @@
 ﻿@page "/signup"
-@inject AuroraJournalingApp.Data.AuroraDbContext dbservice
+
 @inject NavigationManager navigate
 @layout AuroraJournalingApp.Components.Layout.EmptyLayout
 @using System.Diagnostics;
@@ -96,33 +96,5 @@
 </style>
 
 @code {
-    private string Username;
-    private string Password;
-    private int Pin;
-    private User userModel = new User();
-
-    private async Task OnSubmit()
-    {
-        Debug.WriteLine("Submit clicked");
-        try
-        {
-            userModel.Username = Username;
-            userModel.PasswordHash = Password;
-            userModel.pin = Pin;
-
-            await dbservice.AddUser(userModel);
-
-            await SecureStorage.Default.SetAsync("Username", Username);
-            await SecureStorage.Default.SetAsync("Pin", Pin.ToString());
-            await SecureStorage.Default.SetAsync("Password", Password);
-
-            Debug.WriteLine("User has been inserted successfully");
-            navigate.NavigateTo("/login");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Exception: {ex.Message}");
-            Debug.WriteLine(ex.StackTrace);
-        }
-    }
+   
 }

@@ -3,7 +3,7 @@
 <section class="card journal-card">
     <h2 class="card-title">Today's Journal Entry</h2>
 
-    <EditForm Model="@dto" OnValidSubmit="PrintJournal">
+    <EditForm Model="@dto" OnValidSubmit="addJournal">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
@@ -12,16 +12,14 @@
             <label class="label">Title</label>
             <input class="text-input title-input"
                    placeholder="Give today a title…"
-                   @bind="dto.title" />
+                   @bind="dto.Title" />
         </div>
 
-        <!-- Body -->
         <div class="form-group">
             <label class="label">Body</label>
-            <AuroraJournalingApp.Components.RichTextEditor.RichTextEditor @bind-Value="dto.content" />
+            <SfRichTextEditor  @bind-Value="RteValue" Placeholder="Write your journal..." />
         </div>
 
-        <!-- MOODS DROPDOWN -->
         <label class="label">Moods</label>
         <div class="dropdown @(isMoodOpen ? "open" : "")">
             <div class="dropdown-btn" @onclick="ToggleMood">
@@ -31,7 +29,6 @@
                         : "Select moods (max 3)")
                 </span>
             </div>
-
             <div class="dropdown-content">
                 @foreach (var mood in MoodOptions)
                 {
@@ -45,7 +42,7 @@
             </div>
         </div>
 
-        <!-- TAGS DROPDOWN -->
+      
         <label class="label">Tags</label>
         <div class="dropdown @(isTagOpen ? "open" : "")">
             <div class="dropdown-btn" @onclick="ToggleTag">
@@ -55,7 +52,6 @@
                         : "Select tags (max 5)")
                 </span>
             </div>
-
             <div class="dropdown-content">
                 @foreach (var tag in TagOptions)
                 {
@@ -69,37 +65,47 @@
             </div>
         </div>
 
-        <!-- SAVE -->
+    
         <div class="actions">
             <button class="primary-btn" type="submit">
                 Save Entry
             </button>
         </div>
     </EditForm>
+
+   
 </section>
 
 @code {
-    // ───────────── STATE ─────────────
+
     bool isMoodOpen;
     bool isTagOpen;
 
     List<string> selectedMoods = new();
     List<string> selectedTags = new();
 
+    public string RteValue = "";
     public JournalDTO dto = new();
 
-    // ───────────── OPTIONS ─────────────
+    
     readonly string[] MoodOptions =
     {
-        "Happy","Calm","Excited","Sad","Angry","Anxious"
+        "Happy","Excited","Relaxed","Grateful","Confident","Calm",
+        "Thoughtful","Curious","Nostalgic","Bored","Sad","Angry",
+        "Stressed","Lonely","Anxious"
     };
 
     readonly string[] TagOptions =
     {
-        "Study","Work","Family","Health","Friends","Sports","Games"
+        "Work", "Career", "Studies", "Family", "Friends", "Relationships",
+        "Health", "Fitness", "Personal Growth", "Self-care", "Hobbies",
+        "Travel", "Nature", "Finance", "Spirituality", "Birthday",
+        "Holiday", "Vacation", "Celebration", "Exercise", "Reading",
+        "Writing", "Cooking", "Meditation", "Yoga", "Music", "Shopping",
+        "Parenting", "Projects", "Planning", "Reflection"
     };
 
-    // ───────────── TOGGLES ─────────────
+   
     void ToggleMood()
     {
         isMoodOpen = !isMoodOpen;
@@ -129,12 +135,6 @@
             selectedTags.Add(tag);
     }
 
-    // ───────────── SAVE ─────────────
-    void PrintJournal()
-    {
-        Console.WriteLine(dto.title);
-        Console.WriteLine(dto.content);
-        Console.WriteLine(string.Join(", ", selectedMoods));
-        Console.WriteLine(string.Join(", ", selectedTags));
-    }
+    
+  
 }

@@ -1,37 +1,102 @@
 ﻿using AuroraJournalingApp.DTOs;
 using AuroraJournalingApp.Repositories;
-using Microsoft.UI.Xaml.Controls;
+using AuroraJournalingApp.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AuroraJournalingApp.Models;
 
 namespace AuroraJournalingApp.Services
 {
-    public class JournalService(JournalRepository repo)
+    public class JournalService
     {
-        public async Task<JournalDTO> addnewJournal(JournalDTO dto)
-        {
-            var NewJournal = new Journal()
-            {
-                Title = dto.title,
-                Content = dto.content,
-                primaryMood = dto.primarymood,
-                secondaryMoods = dto.secondarymoods,
-                tags = dto.tags
+        private readonly JournalRepository repo;
 
+        public JournalService(JournalRepository repo)
+        {
+            this.repo = repo;
+        }
+
+       
+
+        public async Task<JournalDTO> AddNewJournal(JournalDTO dto)
+        {
+            var journal = new Journal
+            {
+           
+                Title = dto.Title,
+                Content = dto.Content,
+                Created = dto.Created,
+                primaryMood = dto.PrimaryMood,
+                secondaryMoods = dto.SecondaryMoods,
+                tags = dto.Tags
             };
+
             try
             {
-                await repo.AddJournal(NewJournal);
+                await repo.AddJournal(journal);
                 return dto;
             }
-            catch(Exception ex)
+            catch (Exception)
             {
-                throw new Exception("failed to insert journal");
+                throw new Exception("Failed to insert journal");
             }
-         }
+        }
+
+        /* ---------------- READ ---------------- */
+
+        public async Task<Journal?> GetJournalById(string id)
+        {
+            return await repo.GetJournalById(id);
+        }
+
+        public async Task<List<Journal>> GetAllJournals()
+        {
+            return await repo.GetJournalsAsync();
+        }
+
+        public async Task<List<Journal>> GetJournalsByDateRange(DateTime start, DateTime end)
+        {
+            return await repo.GetJournalsByDateRange(start, end);
+        }
+
+        public async Task<List<Journal>> GetJournalsByMood(string mood)
+        {
+            return await repo.GetJournalsByMood(mood);
+        }
+
+        public async Task<List<Journal>> GetJournalsByTag(string tag)
+        {
+            return await repo.GetJournalsByTag(tag);
+        }
+
+        /* ---------------- UPDATE ---------------- */
+
+        public async Task UpdateJournal(string id, JournalDTO dto)
+        {
+            var journal = await repo.GetJournalById(id);
+
+            if (journal == null)
+                throw new Exception("Journal not found");
+
+            journal.Title = dto.Title;
+            journal.Content = dto.Content;
+            journal.primaryMood = dto.PrimaryMood;
+            journal.secondaryMoods = dto.SecondaryMoods;
+            journal.tags = dto.Tags;
+
+            await repo.UpdateJournal(journal);
+        }
+
+        /* ---------------- DELETE ---------------- */
+
+        public async Task DeleteJournal(string id)
+        {
+            var journal = await repo.GetJournalById(id);
+
+            if (journal == null)
+                throw new Exception("Journal not found");
+
+            await repo.DeleteJournalByID(id);
+        }
     }
 }
