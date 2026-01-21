@@ -4,6 +4,8 @@
 @inject AuroraJournalingApp.Data.AuroraDbContext dbservice
 @using Microsoft.Maui.Storage
 @inject NavigationManager navigation
+@inject IJSRuntime JS
+
 <div class="login-container">
     <div class="card" style="min-width:400px;">
         <h2> Welcome Back !</h2>
@@ -13,7 +15,7 @@
 
             <div class="form-group">
                 <label>Username:</label>
-                <InputText @bind-Value="Username" class="input-field" />
+                <InputText @bind-Value="Username" class="input-field" placeholder="Enter username" />
             </div>
 
             <div class="form-group checkbox-group">
@@ -25,7 +27,7 @@
             {
                 <div class="form-group">
                     <label>Password:</label>
-                    <InputText @bind-Value="Password" Type="password" class="input-field" />
+                    <InputText @bind-Value="Password" Type="password" class="input-field" placeholder="Enter password" />
                 </div>
             }
             else
@@ -42,8 +44,6 @@
 </div>
 
 <style>
-    
-  
 </style>
 
 @code {
@@ -55,22 +55,17 @@
     User userModel = new User();
     List<User> userlist = new List<User>();
 
-    protected override async Task OnInitializedAsync()
+    async Task ApplyTheme()
     {
-        //userlist = await dbservice.GetUsersAsync();
+        await JS.InvokeVoidAsync(
+            "document.body.setAttribute",
+            "data-theme",
+            isDark ? "dark" : "light"
+        );
     }
 
 
-    protected async override void OnInitialized()
-    {
-        string oauthToken = await SecureStorage.Default.GetAsync("loggedin");
 
-
-        if (oauthToken == null)
-        {
-            navigation.NavigateTo("/signup");
-        }
-    }
     public async Task OnSubmit()
     {
 
@@ -80,9 +75,11 @@
         if (Username.Equals(User) && Password.Equals(Pass))
         {
 
-            await SecureStorage.Default.SetAsync("loggedin","authorized");
+            await SecureStorage.Default.SetAsync("loggedin", "authorized");
             navigation.NavigateTo("/home");
-        } else {
+        }
+        else
+        {
 
             navigation.NavigateTo("/login");
         }

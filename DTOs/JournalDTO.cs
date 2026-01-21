@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuroraJournalingApp.DTOs
 {
     public class JournalDTO
     {
-        public string Title;
-        public string Content;
-        public string PrimaryMood;
-        public string SecondaryMoods;
-        public DateTime Created;
-        public string Tags;
+        [Required(ErrorMessage = "Title is required")]
+        [StringLength(100, ErrorMessage = "Title is too long")]
+        public string Title { get; set; }
 
-        
-        
+        [Required(ErrorMessage = "Content is required")]
+        public string Content { get; set; }
+
+        public string PrimaryMood { get; set; }
+        public string SecondaryMoods { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
+        public string Tags { get; set; }
     }
 }

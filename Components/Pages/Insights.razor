@@ -1,28 +1,190 @@
 ﻿@page "/insights"
+@using AuroraJournalingApp.Services
+@using AuroraJournalingApp.Models
+@inject JournalService JournalService
 
-<MudText Typo="Typo.h2" Style="margin-left:20px">Insights</MudText>
-<MudLayout>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary">Analytics</MudText>
+    
+    <MudGrid Class="mb-4">
+        <MudItem xs="12" sm="6" md="3">
+            <MudCard Elevation="3" Class="rounded-lg">
+                <MudCardContent>
+                    <MudText Typo="Typo.subtitle1">Current Streak</MudText>
+                    <MudText Typo="Typo.h4" Color="Color.Secondary">@CurrentStreak <span style="font-size:0.5em">Days</span></MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+         <MudItem xs="12" sm="6" md="3">
+            <MudCard Elevation="3" Class="rounded-lg">
+                <MudCardContent>
+                    <MudText Typo="Typo.subtitle1">Longest Streak</MudText>
+                    <MudText Typo="Typo.h4" Color="Color.Info">@LongestStreak <span style="font-size:0.5em">Days</span></MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+         <MudItem xs="12" sm="6" md="3">
+            <MudCard Elevation="3" Class="rounded-lg">
+                <MudCardContent>
+                    <MudText Typo="Typo.subtitle1">Total Entries</MudText>
+                    <MudText Typo="Typo.h4" Color="Color.Success">@TotalEntries</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+         <MudItem xs="12" sm="6" md="3">
+            <MudCard Elevation="3" Class="rounded-lg">
+                <MudCardContent>
+                    <MudText Typo="Typo.subtitle1">Top Mood</MudText>
+                    <MudText Typo="Typo.h4" Color="Color.Warning">@MostFrequentMood</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+
     <MudGrid>
-        <MudItem xs="12" sm="12" md="12" Style="margin:20px;" >
-            <AuroraJournalingApp.Components.Charts.BarChart />
+        <MudItem xs="12" md="6">
+            <MudPaper Class="pa-4" Elevation="3">
+                <MudText Typo="Typo.h6" Class="mb-4">Mood Distribution</MudText>
+                <div class="d-flex justify-center">
+                    <AuroraJournalingApp.Components.Charts.PieChart Data="@MoodPieData" Labels="@MoodPieLabels" />
+                </div>
+            </MudPaper>
         </MudItem>
-        <MudItem xs="12" sm="12" md="12" Style="margin:20px; ">
-            <AuroraJournalingApp.Components.Charts.PieChart />
+        <MudItem xs="12" md="6">
+             <MudPaper Class="pa-4" Elevation="3">
+                <MudText Typo="Typo.h6" Class="mb-4">Most Used Tags</MudText>
+                <AuroraJournalingApp.Components.Charts.BarChart Series="@TagBarSeries" XAxisLabels="@TagBarLabels" />
+             </MudPaper>
         </MudItem>
-        </MudGrid>
-    </MudLayout>
+    </MudGrid>
+</MudContainer>
 
-        @code {
-            private int _index = -1; //default value cannot be 0 -> first selectedindex is 0.
-            private string _width = "650px";
-            private string _height = "350px";
-            private AxisChartOptions _axisChartOptions = new AxisChartOptions();
+@code {
+    public int CurrentStreak { get; set; }
+    public int LongestStreak { get; set; }
+    public int TotalEntries { get; set; }
+    public string MostFrequentMood { get; set; } = "-";
 
-            private List<ChartSeries> _series = new List<ChartSeries>()
-{
-        new ChartSeries() { Name = "Sadness", Data = new double[] { 40, 20, 25, 27, 46, 60, 48, 80, 15 } },
-        new ChartSeries() { Name = "Anger", Data = new double[] { 19, 24, 35, 13, 28, 15, 13, 16, 31 } },
-        new ChartSeries() { Name = "Happiness", Data = new double[] { 8, 6, 11, 13, 4, 16, 10, 16, 18 } },
-    };
-            private string[] _xAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+    public double[] MoodPieData { get; set; } = Array.Empty<double>();
+    public string[] MoodPieLabels { get; set; } = Array.Empty<string>();
+
+    public List<ChartSeries> TagBarSeries { get; set; } = new();
+    public string[] TagBarLabels { get; set; } = Array.Empty<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var journals = await JournalService.GetAllJournals();
+        ProcessAnalytics(journals);
+    }
+
+    private void ProcessAnalytics(List<AuroraJournalingApp.Models.Journal> journals)
+    {
+        if (journals == null || !journals.Any()) return;
+
+        // Sort by date desc
+        var sortedJournals = journals.OrderByDescending(j => j.Created).ToList();
+        TotalEntries = sortedJournals.Count;
+
+        // Streaks
+        CalculateStreaks(sortedJournals);
+
+        // Moods (Primary + Secondary)
+        var moodCounts = new Dictionary<string, int>();
+        foreach (var j in journals)
+        {
+            if (!string.IsNullOrWhiteSpace(j.primaryMood))
+                AddCount(moodCounts, j.primaryMood);
+            
+            if (!string.IsNullOrWhiteSpace(j.secondaryMoods))
+            {
+                var secs = j.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var s in secs) AddCount(moodCounts, s.Trim());
+            }
         }
+
+        if (moodCounts.Any())
+        {
+            MostFrequentMood = moodCounts.OrderByDescending(x => x.Value).First().Key;
+            
+            // Pie Data
+            var topMoods = moodCounts.OrderByDescending(x => x.Value).Take(10).ToList(); // Top 10 to avoid clutter
+            MoodPieData = topMoods.Select(x => (double)x.Value).ToArray();
+            MoodPieLabels = topMoods.Select(x => $"{x.Key} ({x.Value})").ToArray();
+        }
+
+        // Tags
+        var tagCounts = new Dictionary<string, int>();
+        foreach (var j in journals)
+        {
+             if (!string.IsNullOrWhiteSpace(j.tags))
+            {
+                var tags = j.tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var t in tags) AddCount(tagCounts, t.Trim());
+            }
+        }
+
+        if (tagCounts.Any())
+        {
+            var topTags = tagCounts.OrderByDescending(x => x.Value).Take(8).ToList();
+            TagBarLabels = topTags.Select(x => x.Key).ToArray();
+            TagBarSeries = new List<ChartSeries>
+            {
+                new ChartSeries { Name = "Tag Usage", Data = topTags.Select(x => (double)x.Value).ToArray() }
+            };
+        }
+    }
+
+    private void AddCount(Dictionary<string, int> dict, string key)
+    {
+        if (dict.ContainsKey(key)) dict[key]++;
+        else dict[key] = 1;
+    }
+
+    private void CalculateStreaks(List<AuroraJournalingApp.Models.Journal> sortedJournals)
+    {
+        var dates = sortedJournals.Select(j => j.Created.Date).Distinct().OrderByDescending(d => d).ToList();
+        if (!dates.Any()) return;
+
+        // Current Streak
+        int current = 0;
+        var today = DateTime.Today;
+        // Check if user journaled today or yesterday to start the streak
+        if (dates.Contains(today))
+        {
+            current = 1;
+            var checkDate = today.AddDays(-1);
+            while (dates.Contains(checkDate))
+            {
+                current++;
+                checkDate = checkDate.AddDays(-1);
+            }
+        }
+        else if (dates.Contains(today.AddDays(-1)))
+        {
+             current = 1;
+            var checkDate = today.AddDays(-2);
+            while (dates.Contains(checkDate))
+            {
+                current++;
+                checkDate = checkDate.AddDays(-1);
+            }
+        }
+        CurrentStreak = current;
+
+        // Longest Streak
+        int max = 0;
+        int temp = 0;
+        for (int i = 0; i < dates.Count - 1; i++)
+        {
+            temp++;
+            if ((dates[i] - dates[i+1]).Days > 1)
+            {
+                if (temp > max) max = temp;
+                temp = 0;
+            }
+        }
+        temp++; // Count the last one
+        if (temp > max) max = temp;
+        LongestStreak = max;
+    }
+}

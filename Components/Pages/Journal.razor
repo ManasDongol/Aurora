@@ -6,16 +6,27 @@
 @inject NavigationManager navigator
 
 <div class="container">
-    @if (_ready)
+    @if (entrystatus)
     {
        
-      
-    }
-      
-     <AuroraJournalingApp.Components.Cards.AddJournalCard/>
-    
 
-    </div>
+       
+       
+       <AuroraJournalingApp.Components.Cards.EditJournalCard />
+
+    }
+    else
+    {
+        <AuroraJournalingApp.Components.Cards.AddJournalCard />
+    }
+
+
+
+
+
+
+
+</div>
 @code {
 
     public string journaltitle;
@@ -23,32 +34,11 @@
 
     private List<string> selectedMoods = new();
     private List<string> selectedTags = new();
-    protected override async Task OnInitializedAsync()
-    {
-        string oauthToken = await SecureStorage.Default.GetAsync("loggedin");
+   
+
+    private bool checkjournal = false;
 
 
-        if (oauthToken == null)
-        {
-            navigator.NavigateTo("/signup");
-        }
-        if (oauthToken == "unauthorized")
-        {
-            navigator.NavigateTo("/login");
-        }
-
-
-    }
-    private bool _ready;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _ready = true;
-            StateHasChanged();
-        }
-    }
 
 
 
@@ -68,23 +58,8 @@
         "Stressed","Lonely","Anxious"
     };
 
-    public static List<journalcontent> journals = new();
 
-    void AddJournal()
-    {
-        journals.Add(new journalcontent
-        {
-            Title = journaltitle,
-            content = journaltext,
-            Moods = selectedMoods.ToList(),
-            Tags = selectedTags.ToList()
-        });
 
-        journaltitle = "";
-        journaltext = "";
-        selectedMoods.Clear();
-        selectedTags.Clear();
-    }
 
 
 }

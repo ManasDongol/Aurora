@@ -42,7 +42,6 @@ namespace AuroraJournalingApp.Services
             }
         }
 
-        /* ---------------- READ ---------------- */
 
         public async Task<Journal?> GetJournalById(string id)
         {
@@ -59,9 +58,14 @@ namespace AuroraJournalingApp.Services
             return await repo.GetJournalsByDateRange(start, end);
         }
 
+        public async Task<Journal> GetJournalByDate(DateTime Today)
+        {
+            return await repo.GetJournalByDate(Today);
+        }
+
         public async Task<List<Journal>> GetJournalsByMood(string mood)
         {
-            return await repo.GetJournalsByMood(mood);
+            return await repo.GetJournalsByMood(mood, mood);
         }
 
         public async Task<List<Journal>> GetJournalsByTag(string tag)
@@ -69,7 +73,7 @@ namespace AuroraJournalingApp.Services
             return await repo.GetJournalsByTag(tag);
         }
 
-        /* ---------------- UPDATE ---------------- */
+      
 
         public async Task UpdateJournal(string id, JournalDTO dto)
         {
@@ -87,7 +91,7 @@ namespace AuroraJournalingApp.Services
             await repo.UpdateJournal(journal);
         }
 
-        /* ---------------- DELETE ---------------- */
+        
 
         public async Task DeleteJournal(string id)
         {

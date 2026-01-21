@@ -54,11 +54,29 @@ namespace AuroraJournalingApp.Repositories
         .ToListAsync();
         }
 
+        public async Task<Journal> GetJournalByDate(DateTime today)
+        {
+            var start = today.Date;
+            var end = start.AddDays(1);
+
+            return await db.Table<Journal>()
+                .Where(j => j.Created >= start && j.Created < end)
+                .FirstOrDefaultAsync();
+        }
+
+
         public async Task<List<Journal>> GetJournalsByMood(string primarymood, string secondarymood)
         {
             return await db.Table<Journal>()
-                .Where(J => J.primaryMood == primarymood || J.secondaryMoods == secondarymood)
+                .Where(J => J.primaryMood == primarymood || J.secondaryMoods.Contains(secondarymood))
                 .OrderByDescending(j => j.Created) .ToListAsync();
+        }
+
+        public async Task<List<Journal>> GetJournalsByTag(string tag)
+        {
+             return await db.Table<Journal>()
+                .Where(J => J.tags.Contains(tag))
+                .OrderByDescending(j => j.Created).ToListAsync();
         }
 
         public async Task<Journal> UpdateJournal(Journal val)

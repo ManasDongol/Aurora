@@ -1,0 +1,75 @@
+﻿<h3>Your today's entry</h3>
+
+@if (todayEntry is null)
+{
+    <p>Loading today’s entry…</p>
+}
+else
+{
+    @if (!openEdit)
+    {
+        <div class="journal-entry-card">
+            <header class="journal-header">
+                <h3 class="journal-title">@todayEntry.Title</h3>
+
+                @if (todayEntry.Created != default)
+                {
+                    <span class="journal-time">
+                        @todayEntry.Created.ToString("g")
+                    </span>
+                }
+            </header>
+
+            <div class="journal-content">
+                @if (!string.IsNullOrWhiteSpace(todayEntry.Content))
+                {
+                    @((MarkupString)todayEntry.Content)
+                }
+                else
+                {
+                    <em>No content</em>
+                }
+            </div>
+
+            <div class="meta-section">
+                <div class="chips-row">
+                    @if (!string.IsNullOrWhiteSpace(todayEntry.primaryMood))
+                    {
+                        <span class="chip mood-primary">@todayEntry.primaryMood</span>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(todayEntry.secondaryMoods))
+                    {
+                        foreach (var mood in todayEntry.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <span class="chip mood-secondary">@mood.Trim()</span>
+                        }
+                    }
+                </div>
+
+                <div class="chips-row">
+                    @if (!string.IsNullOrWhiteSpace(todayEntry.tags))
+                    {
+                        foreach (var tag in todayEntry.tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <span class="chip tag">@tag.Trim()</span>
+                        }
+                    }
+                </div>
+
+                <button class="edit-entry" @onclick="() => openEdit = true">
+                    edit entry
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Edit mode here…</p>
+    }
+}
+
+
+@code {
+    bool openEdit = false;
+}

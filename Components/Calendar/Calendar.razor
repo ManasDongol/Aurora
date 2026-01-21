@@ -3,10 +3,22 @@
 <h3>Calendar</h3>
 
 
-<SfCalendar TValue="DateTime" @bind-Value="selectedDate" Max="@MaxDate"/>
+<SfCalendar TValue="DateTime" Value="selectedDate" ValueChanged="OnValueChanged" Max="@MaxDate"/>
 <span >@selectedDate</span>
 
 @code {
     private DateTime selectedDate = DateTime.Today;
     public DateTime MaxDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+    [Parameter]
+    public EventCallback<DateTime> OnDateChanged { get; set; }
+
+    private async Task OnValueChanged(DateTime newDate)
+    {
+        selectedDate = newDate;
+        if (OnDateChanged.HasDelegate)
+        {
+            await OnDateChanged.InvokeAsync(newDate);
+        }
+    }
 }

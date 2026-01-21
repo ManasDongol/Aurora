@@ -1,18 +1,85 @@
 ﻿@page "/history"
 @using AuroraJournalingApp.Components.Calendar
+@using AuroraJournalingApp.Services
+@using AuroraJournalingApp.Models
+@inject JournalService JournalService
 
 <section class="card">
-    <Calendar />
+    <Calendar OnDateChanged="OnDateSelected" />
 </section>
-<div class="card">
-    
-    <!-- Need to loop through journallist and list all the journals-->
 
+<div class="journal-list-container">
+    @if (journallist == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (journallist.Count == 0)
+    {
+        <div class="empty-state">
+            <p>No journals found for this date.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var journal in journallist)
+        {
+            <div class="journal-entry-card">
+                <header class="journal-header">
+                    <h3 class="journal-title">@journal.Title</h3>
+                    <span class="journal-time">@journal.Created.ToString("t")</span>
+                </header>
+                <div class="meta-section">
+                    <div class="chips-row">
+                        @if (!string.IsNullOrEmpty(journal.primaryMood))
+                        {
+                            <span class="chip mood-primary">@journal.primaryMood</span>
+                        }
+                        @if (!string.IsNullOrEmpty(journal.secondaryMoods))
+                        {
+                            foreach (var mood in journal.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <span class="chip mood-secondary">@mood.Trim()</span>
+                            }
+                        }
+                    </div>
+
+                    <div class="chips-row">
+                        @if (!string.IsNullOrEmpty(journal.tags))
+                        {
+                            foreach (var tag in journal.tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                <span class="chip tag">@tag.Trim()</span>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="journal-content">
+                    @((MarkupString)journal.Content)
+                </div>
+
+
+            </div>
+        }
+    }
 </div>
 
 @code {
+    List<AuroraJournalingApp.Models.Journal> journallist = new List<AuroraJournalingApp.Models.Journal>();
 
-    List<Journal> journallist = new List<Journal>();
-    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadJournals(DateTime.Today);
+    }
 
+    private async Task OnDateSelected(DateTime date)
+    {
+        await LoadJournals(date);
+    }
+
+    private async Task LoadJournals(DateTime date)
+    {
+        var start = date.Date;
+        var end = date.Date.AddDays(1).AddTicks(-1);
+        journallist = await JournalService.GetJournalsByDateRange(start, end);
+    }
 }

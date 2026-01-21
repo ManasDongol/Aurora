@@ -7,7 +7,7 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <!-- Title -->
+        
         <div class="form-group">
             <label class="label">Title</label>
             <input class="text-input title-input"
@@ -17,7 +17,7 @@
 
         <div class="form-group">
             <label class="label">Body</label>
-            <SfRichTextEditor  @bind-Value="RteValue" Placeholder="Write your journal..." />
+          <SfRichTextEditor  @bind-Value= "RteValue" Placeholder="Write your journal..." />
         </div>
 
         <label class="label">Moods</label>
@@ -68,14 +68,29 @@
     
         <div class="actions">
             <button class="primary-btn" type="submit">
-                Save Entry
+                @(editJournal ? "Update Entry" : "Save Entry")
             </button>
         </div>
     </EditForm>
 
    
 </section>
+<style>
 
+    
+    .e-richtexteditor .e-rte-content .e-content,
+    .e-richtexteditor .e-source-content .e-content {
+        font-size: 20px;
+        border-color:var(--surface-color);
+    }
+
+
+    .e-richtexteditor .e-rte-content,
+    .e-richtexteditor .e-source-content {
+        background: var(--bg-color);
+        color: var(--text-color);
+    }
+</style>
 @code {
 
     bool isMoodOpen;
@@ -84,12 +99,16 @@
     List<string> selectedMoods = new();
     List<string> selectedTags = new();
 
-    public string RteValue = "";
+    public string RteValue { get; set; } = "";
     public JournalDTO dto = new();
 
-    
-    readonly string[] MoodOptions =
+    private async Task OnRteValueChanged(string value)
     {
+        RteValue = value;
+        await Task.CompletedTask; // optional
+    }
+    readonly string[] MoodOptions =
+{
         "Happy","Excited","Relaxed","Grateful","Confident","Calm",
         "Thoughtful","Curious","Nostalgic","Bored","Sad","Angry",
         "Stressed","Lonely","Anxious"
@@ -105,7 +124,7 @@
         "Parenting", "Projects", "Planning", "Reflection"
     };
 
-   
+
     void ToggleMood()
     {
         isMoodOpen = !isMoodOpen;
@@ -135,6 +154,10 @@
             selectedTags.Add(tag);
     }
 
-    
-  
+
+
+
+
+
+
 }
