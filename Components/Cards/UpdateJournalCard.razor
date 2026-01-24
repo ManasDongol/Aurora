@@ -7,7 +7,7 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        
+
         <div class="form-group">
             <label class="label">Title</label>
             <input class="text-input title-input"
@@ -17,8 +17,7 @@
 
         <div class="form-group">
             <label class="label">Body</label>
-          <SfRichTextEditor  @bind-Value= "RteValue" Placeholder="Write your journal..." />
-            
+            <SfRichTextEditor @bind-Value="RteValue" Placeholder="Write your journal..." />
         </div>
 
         <label class="label">Moods</label>
@@ -43,7 +42,7 @@
             </div>
         </div>
 
-      
+
         <label class="label">Tags</label>
         <div class="dropdown @(isTagOpen ? "open" : "")">
             <div class="dropdown-btn" @onclick="ToggleTag">
@@ -65,7 +64,8 @@
                 }
             </div>
         </div>
-        
+
+
         <div class="actions">
             <button class="primary-btn" type="submit">
                 @(editJournal ? "Update Entry" : "Save Entry")
@@ -73,15 +73,15 @@
         </div>
     </EditForm>
 
-   
+
 </section>
 <style>
 
-    
+
     .e-richtexteditor .e-rte-content .e-content,
     .e-richtexteditor .e-source-content .e-content {
         font-size: 20px;
-        border-color:var(--surface-color);
+        border-color: var(--surface-color);
     }
 
 

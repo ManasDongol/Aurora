@@ -1,29 +1,28 @@
-﻿using AuroraJournalingApp.DTOs;
-using AuroraJournalingApp.Models;
+﻿using AuroraJournalingApp.Models;
 using AuroraJournalingApp.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.Components.Cards
 {
-    public partial class AddJournalCard
+    public partial class UpdateJournalCard
     {
+
         [Inject]
         public JournalService journal { get; set; }
 
         [Inject]
         public NavigationManager nav { get; set; }
 
-      
+
         bool editJournal = false;
         Journal existingJournal;
 
-       
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,11 +32,8 @@ namespace AuroraJournalingApp.Components.Cards
                 existingJournal = checkEntry;
                 editJournal = true;
 
-        
+                // Populate form with existing data
                 dto.Title = checkEntry.Title;
-                // RteValue = checkEntry.Content;
-
-                Debug.WriteLine(checkEntry.Content);
                 dto.Content = checkEntry.Content ?? string.Empty;
 
                 if (!string.IsNullOrEmpty(checkEntry.primaryMood))
@@ -60,13 +56,12 @@ namespace AuroraJournalingApp.Components.Cards
 
         public async Task addJournal()
         {
-
-            dto.Content = RteValue;
+            // Sync moods/tags to DTO if not bound directly
             dto.PrimaryMood = selectedMoods.FirstOrDefault();
             dto.SecondaryMoods = string.Join(",", selectedMoods.Skip(1));
             dto.Tags = string.Join(",", selectedTags);
-            dto.Created = editJournal ? existingJournal.Created : DateTime.Today;
-            
+            dto.Created = editJournal ? existingJournal.Created : DateTime.Now;
+
             try
             {
                 if (editJournal)
@@ -77,27 +72,11 @@ namespace AuroraJournalingApp.Components.Cards
                 {
                     await journal.AddNewJournal(dto);
                 }
-                nav.NavigateTo("/history"); 
+                nav.NavigateTo("/history");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }
-        }
-
-        public async Task deleteJournal()
-        {
-            if (editJournal && existingJournal != null)
-            {
-                try
-                {
-                    await journal.DeleteJournal(existingJournal.JournalId);
-                    nav.NavigateTo("/history");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
             }
         }
     }

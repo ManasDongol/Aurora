@@ -20,7 +20,7 @@ else
                 }
             </header>
 
-            <div class="journal-content">
+        
                 @if (!string.IsNullOrWhiteSpace(todayEntry.Content))
                 {
                     @((MarkupString)todayEntry.Content)
@@ -29,7 +29,7 @@ else
                 {
                     <em>No content</em>
                 }
-            </div>
+            </div> 
 
             <div class="meta-section">
                 <div class="chips-row">
@@ -58,14 +58,18 @@ else
                 </div>
 
                 <button class="edit-entry" @onclick="() => openEdit = true">
-                    edit entry
+                    Update Journal
+                </button>
+                <button class="negative-button" @onclick="deleteAsync">
+                    Delete Journal
                 </button>
             </div>
-        </div>
+      
     }
     else
     {
-        <p>Edit mode here…</p>
+       
+        <AddJournalCard/>
     }
 }
 

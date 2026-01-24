@@ -1,0 +1,118 @@
+﻿/* Overall dropdown container */
+.dropdown {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    border-radius: 10px;
+    border-color: var(--border-color);
+    background-color: var(--bg-color);
+}
+
+.dropdown-btn {
+    width: 100%;
+    padding: 10px;
+    height: auto;
+    min-height: 44px;
+    /* keep minimum height */
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background: var(--bg-color);
+    border-color: var(--border-color);
+    display: flex;
+    align-items: center;
+}
+
+
+.selected-text {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    white-space: normal;
+    /* allow wrapping */
+    overflow-wrap: anywhere;
+    /* wrap long text */
+    flex: 1;
+    /* take all available space */
+}
+
+
+.dropdown-content {
+    position: absolute;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: var(--bg-color);
+    display: none;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+    .dropdown-content label {
+        display: block;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+        .dropdown-content label:hover {
+            background: var(--navbarhover-color);
+            color: var(--navbarhovertext-color);
+        }
+
+.dropdown.open .dropdown-content {
+    display: block;
+}
+
+/* Optional: for moods and tags in flex row */
+.moodtag-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.moodtag-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card journal-card {
+    margin-top: 50px;
+}
+
+/* Button Styles */
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.primary-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: var(--primary-color, #6200ea);
+    color: white;
+    transition: background 0.3s ease;
+}
+
+    .primary-btn:hover {
+        filter: brightness(1.1);
+    }
+
+.delete-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: #ef4444;
+    /* Red-500 */
+    color: white;
+    transition: background 0.3s ease;
+}
+
+    .delete-btn:hover {
+        background-color: #dc2626;
+        /* Red-600 */
+    }

@@ -2,10 +2,34 @@
 @using AuroraJournalingApp.Components.Calendar
 @using AuroraJournalingApp.Services
 @using AuroraJournalingApp.Models
+@using AuroraJournalingApp.DTOs
 @inject JournalService JournalService
 
 <section class="card">
-    <Calendar OnDateChanged="OnDateSelected" />
+   
+    <div class="maincard">
+        <div>
+            <Calendar OnDateChanged="OnDateSelected" />
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <label>Search by Content</label>
+                <input @bind="SearchText" placeholder="Search journal..." class="text-input" />
+
+            </div>
+            <div class="form-group">
+                <label>Search by Moods</label>
+                <input @bind="moodstring" placeholder="insert mood..." class="text-input" />
+
+            </div>
+            <div class="form-group">
+                <label>Search by Tags</label>
+                <input @bind="tagstring" placeholder="insert tag..." class="text-input" />
+
+            </div>
+            <button class="bluebutton" @onclick="PerformSearch">Search</button>
+        </div>
+    </div>
 </section>
 
 <div class="journal-list-container">
@@ -16,7 +40,7 @@
     else if (journallist.Count == 0)
     {
         <div class="empty-state">
-            <p>No journals found for this date.</p>
+            <p>No journals found.</p>
         </div>
     }
     else
@@ -26,7 +50,7 @@
             <div class="journal-entry-card">
                 <header class="journal-header">
                     <h3 class="journal-title">@journal.Title</h3>
-                    <span class="journal-time">@journal.Created.ToString("t")</span>
+                    <span class="journal-time">@journal.Created.ToString("t") - @journal.Created.ToString("d")</span>
                 </header>
                 <div class="meta-section">
                     <div class="chips-row">
@@ -64,6 +88,9 @@
 </div>
 
 @code {
+    
+    public string moodstring { get; set; } = "";
+    public string tagstring { get; set; } = "";
     List<AuroraJournalingApp.Models.Journal> journallist = new List<AuroraJournalingApp.Models.Journal>();
 
     protected override async Task OnInitializedAsync()
@@ -81,5 +108,25 @@
         var start = date.Date;
         var end = date.Date.AddDays(1).AddTicks(-1);
         journallist = await JournalService.GetJournalsByDateRange(start, end);
+    }
+
+    private async Task PerformSearch()
+    {
+        var opts = new SearchOptions
+        {
+            Content = SearchText,
+            Mood = !string.IsNullOrWhiteSpace(moodstring) ? new List<string> { moodstring } : null,
+            Tags = !string.IsNullOrWhiteSpace(tagstring) ? new List<string> { tagstring } : null
+        };
+
+     
+        if (string.IsNullOrWhiteSpace(SearchText) && string.IsNullOrWhiteSpace(moodstring) && string.IsNullOrWhiteSpace(tagstring))
+        {
+             
+             await LoadJournals(DateTime.Today);
+             return;
+        }
+
+        journallist = await JournalService.SearchAsync(opts);
     }
 }

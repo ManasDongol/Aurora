@@ -49,6 +49,7 @@ namespace AuroraJournalingApp
 #endif
 
             return builder.Build();
+
         }
     }
 }

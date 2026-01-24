@@ -1,41 +1,38 @@
-body, html {
-    
-    margin: 0;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-}
 .topbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 56px; /* adjust to your top bar height */
+    height: 56px;
+    /* adjust to your top bar height */
     background-color: var(--topbar-bg);
     color: var(--topbar-text);
     z-index: 1001;
-    
+
 }
 
 .sidebar {
     position: fixed;
-    top: 56px; /* start below top bar */
+    top: 56px;
+    /* start below top bar */
     left: 0;
     bottom: 0;
     background-color: var(--sidebar-bg);
     color: var(--sidebar-text);
     border-right: 1px solid black;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     height: 900px;
 }
 
 .mainContent {
-    margin-left: 180px; /* width of sidebar */
-    margin-top: 56px; /* height of topbar */
+    margin-left: 180px;
+    /* width of sidebar */
+    margin-top: 56px;
+    /* height of topbar */
     /*padding: 1rem;*/
     background-color: var(--bg-color);
-    height: 100vh;
-    color: var( --text-color);
-    padding-top:28px;
+    min-height: 100vh;
+    color: var(--text-color);
+    padding-top: 28px;
 }

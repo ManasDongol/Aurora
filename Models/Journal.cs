@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.Models
 {
-   
+
     public class Journal
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }   // FTS rowid reference
 
-        [PrimaryKey]
-        public string JournalId { get; } = Guid.NewGuid().ToString();
-
+        [NotNull]
+        public string JournalId { get; set; } = Guid.NewGuid().ToString();
 
         [NotNull]
         public string Title { get; set; }
@@ -29,6 +30,6 @@ namespace AuroraJournalingApp.Models
         public bool IsUpdated { get; set; } = false;
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime? Updated { get; set; }
-
     }
+
 }

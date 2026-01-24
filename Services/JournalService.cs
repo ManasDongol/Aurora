@@ -4,6 +4,7 @@ using AuroraJournalingApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace AuroraJournalingApp.Services
 {
@@ -45,6 +46,9 @@ namespace AuroraJournalingApp.Services
 
         public async Task<Journal?> GetJournalById(string id)
         {
+            Debug.WriteLine(id);
+            if (repo == null)
+                throw new Exception("REPO IS NULL");
             return await repo.GetJournalById(id);
         }
 
@@ -101,6 +105,11 @@ namespace AuroraJournalingApp.Services
                 throw new Exception("Journal not found");
 
             await repo.DeleteJournalByID(id);
+        }
+
+        public async Task<List<Journal>> SearchAsync(SearchOptions opts)
+        {
+            return await repo.SearchAsync(opts);
         }
     }
 }

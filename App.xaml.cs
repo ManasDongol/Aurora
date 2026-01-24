@@ -4,9 +4,10 @@ namespace AuroraJournalingApp
 {
     public partial class App : Application
     {
-        public App()
+        public App(AuroraDbContext db)
         {
             InitializeComponent();
+            _=db.InitializeAsync();
 
          
         }
