@@ -16,7 +16,7 @@ namespace AuroraJournalingApp.Models
         public string UserID { get; set; } =Guid.NewGuid().ToString();
         public string Username { get; set; }
         public string PasswordHash { get; set; }
-        public int pin { get; set; }
+        
         public string email { get; set; }
         
 

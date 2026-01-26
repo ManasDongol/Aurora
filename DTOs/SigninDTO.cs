@@ -10,6 +10,6 @@ namespace AuroraJournalingApp.DTOs
     {
         public string username;
         public string password;
-        public int pin;
+        public string email;
     }
 }

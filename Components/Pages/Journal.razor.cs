@@ -12,17 +12,7 @@ namespace AuroraJournalingApp.Components.Pages
         bool entrystatus = false;
         protected override async Task OnInitializedAsync()
         {
-            string oauthToken = await SecureStorage.Default.GetAsync("loggedin");
-
-
-            if (oauthToken == null)
-            {
-                navigator.NavigateTo("/signup");
-            }
-            if (oauthToken == "unauthorized")
-            {
-                navigator.NavigateTo("/login");
-            }
+           
 
             var checkEntry = await service.GetJournalByDate(DateTime.Now.Date);
             if (checkEntry != null)

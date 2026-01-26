@@ -11,7 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AuroraJournalingApp.Components.Pages
 {
-    public partial class JournalHistory(JournalRepository repo)
+    public partial class JournalHistory(JournalRepository repo, PdfService service)
     {
         private string SearchText { get; set; } = "";
         private List<Models.Journal> Results { get; set; } = new();
@@ -21,11 +21,9 @@ namespace AuroraJournalingApp.Components.Pages
 
         private async Task OnSearchChanged(ChangeEventArgs e)
         {
-            // Cancel any previous pending search
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
-
-            // Waiting 300ms to avoid querying on every keystroke
+           
             try
             {
                 await Task.Delay(300, _cts.Token);
@@ -63,5 +61,24 @@ namespace AuroraJournalingApp.Components.Pages
             return finallist;
         }
 
+
+        public void JournalPdf(Models.Journal journal)
+        {
+            var moods = journal.primaryMood +","+ journal.secondaryMoods;
+
+            var day = journal.Created.Date;
+            var plainText = HTMLService.ToPlainText(journal.Content);
+            GenerateJournalPdfDTO dto = new GenerateJournalPdfDTO
+            {
+                Title = journal.Title,
+                Content = plainText,
+                Created = day,
+                TagCounts = journal.tags,
+                MoodCounts = moods
+
+            };
+            service.GenerateJournalPdf(dto);
+
+        }
     }
 }

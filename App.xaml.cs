@@ -1,4 +1,5 @@
 ﻿using AuroraJournalingApp.Data;
+using QuestPDF.Infrastructure;
 
 namespace AuroraJournalingApp
 {
@@ -8,8 +9,9 @@ namespace AuroraJournalingApp
         {
             InitializeComponent();
             _=db.InitializeAsync();
+            QuestPDF.Settings.License = LicenseType.Community;
 
-         
+
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

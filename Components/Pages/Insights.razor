@@ -3,6 +3,8 @@
 @using AuroraJournalingApp.Models
 @inject JournalService JournalService
 
+<button @onclick="pdfgenerator">Generate PDF</button>
+
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
     <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary">Analytics</MudText>
     
@@ -76,6 +78,8 @@
         var journals = await JournalService.GetAllJournals();
         ProcessAnalytics(journals);
     }
+
+
 
     private void ProcessAnalytics(List<AuroraJournalingApp.Models.Journal> journals)
     {

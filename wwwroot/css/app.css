@@ -51,6 +51,10 @@ html, body {
     margin: 0;
     height:100%;
 }
+#app {
+    min-height: 100vh;
+    background-color: var(--bg-color);
+}
 
 @font-face {
     font-family: 'outfit-medium';

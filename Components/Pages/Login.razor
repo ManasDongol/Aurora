@@ -18,26 +18,17 @@
                 <InputText @bind-Value="Username" class="input-field" placeholder="Enter username" />
             </div>
 
-            <div class="form-group checkbox-group">
-                <InputCheckbox @bind-Value="usePin" class="checkbox-field" />
-                <label>Use PIN instead</label>
-            </div>
+          
 
-            @if (!usePin)
-            {
+          
                 <div class="form-group">
                     <label>Password:</label>
                     <InputText @bind-Value="Password" Type="password" class="input-field" placeholder="Enter password" />
                 </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <label>PIN:</label>
-                    <InputNumber @bind-Value="Pin" class="input-field" />
+          
+                <div>
+                    Forgot password? change your <NavLink href="/passwordchange">password</NavLink>
                 </div>
-            }
-
             <button type="submit" class="bluebutton">Log In</button>
         </EditForm>
     </div>
@@ -49,9 +40,8 @@
 @code {
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
-    public int Pin { get; set; }
-    public bool usePin { get; set; } = false;
-
+   
+   
     User userModel = new User();
     List<User> userlist = new List<User>();
 

@@ -172,6 +172,17 @@ namespace AuroraJournalingApp.Repositories
             return await query.OrderByDescending(j => j.Created).ToListAsync();
         }
 
+        public async Task<List<Journal>> GetPages(PaginationDTO dto)
+        {
+            int pagesize = 5;
+            int offset = pagesize * dto.pageIndex;
+            return await db.Table<Journal>()
+                           .OrderByDescending(j => j.Created)
+                           .Skip(offset)
+                           .Take(pagesize)
+                           .ToListAsync();
+        }
+        
 
     }
 }

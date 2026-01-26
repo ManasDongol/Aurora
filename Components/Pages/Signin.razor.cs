@@ -14,7 +14,7 @@ namespace AuroraJournalingApp.Components.Pages
     {
         private string Username;
         private string Password;
-        private int Pin;
+        private string Email;
         private SigninDTO userModel = new SigninDTO();
 
         private async Task OnSubmit()
@@ -24,13 +24,16 @@ namespace AuroraJournalingApp.Components.Pages
             {
                 userModel.username = Username;
                 userModel.password = Password;
-                userModel.pin = Pin;
+                userModel.email = Email;
 
                 await userservice.RegisterUser(userModel);
 
                 await SecureStorage.Default.SetAsync("Username", Username);
-                await SecureStorage.Default.SetAsync("Pin", Pin.ToString());
+                await SecureStorage.Default.SetAsync("Email", Email);
                 await SecureStorage.Default.SetAsync("Password", Password);
+
+                await SecureStorage.Default.SetAsync("registered", "true");
+
 
                 Debug.WriteLine("User has been inserted successfully");
                 navigate.NavigateTo("/login");

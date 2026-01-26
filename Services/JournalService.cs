@@ -111,5 +111,10 @@ namespace AuroraJournalingApp.Services
         {
             return await repo.SearchAsync(opts);
         }
+
+        public async Task<List<Journal>> GetPages(PaginationDTO opts)
+        {
+            return await repo.GetPages(opts);
+        }
     }
 }

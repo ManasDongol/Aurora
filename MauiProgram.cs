@@ -36,11 +36,13 @@ namespace AuroraJournalingApp
             builder.Services.AddScoped<Snackbar>();
             builder.Services.AddScoped<DarkModeState>();
             builder.Services.AddSingleton<AuroraDbContext>();
-            builder.Services.AddScoped<SQLiteAsyncConnection>();
+           
+
             builder.Services.AddScoped<JournalRepository>();
             builder.Services.AddScoped<JournalService>();
             builder.Services.AddScoped<UserRepository>();
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<PdfService>();
 
 
 #if DEBUG

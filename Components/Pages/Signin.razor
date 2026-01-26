@@ -23,8 +23,8 @@
             </div>
 
             <div class="form-group">
-                <label>PIN:</label>
-                <InputNumber @bind-Value="Pin" class="input-field" />
+                <label>Email:</label>
+                <InputText @bind-Value="Email" class="input-field" />
             </div>
 
             <button type="submit" class="signup-btn">Register</button>
@@ -33,66 +33,7 @@
 </div>
 
 <style>
-    /* Container centers the card */
-    .signup-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh;
-        background-color: #f0f2f5;
-        padding: 20px;
-    }
-
-    /* Card style */
-    .signup-card {
-        background-color: #ffffff;
-        padding: 30px 40px;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        width: 100%;
-        max-width: 400px;
-        box-sizing: border-box;
-        text-align: center;
-    }
-
-    /* Form groups spacing */
-    .form-group {
-        margin-bottom: 20px;
-        text-align: left;
-    }
-
-    .input-field {
-        width: 100%;
-        padding: 10px 12px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-
-    /* Submit button */
-    .signup-btn {
-        width: 100%;
-        padding: 12px 0;
-        background-color: #4a90e2;
-        color: white;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-        .signup-btn:hover {
-            background-color: #357ab8;
-        }
-
-    /* Heading */
-    h2 {
-        margin-bottom: 25px;
-        color: #333;
-        font-family: 'Segoe UI', sans-serif;
-    }
+   
 </style>
 
 @code {

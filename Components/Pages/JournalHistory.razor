@@ -50,7 +50,11 @@
             <div class="journal-entry-card">
                 <header class="journal-header">
                     <h3 class="journal-title">@journal.Title</h3>
-                    <span class="journal-time">@journal.Created.ToString("t") - @journal.Created.ToString("d")</span>
+                    <span class="journal-time"> @journal.Created.ToString("d")</span>
+                    
+                    <button class="bluebutton" @onclick="() => JournalPdf(journal)">
+                        Export Journal
+                    </button>
                 </header>
                 <div class="meta-section">
                     <div class="chips-row">
@@ -77,6 +81,7 @@
                         }
                     </div>
                 </div>
+                <br />
                 <div class="journal-content">
                     @((MarkupString)journal.Content)
                 </div>
@@ -86,7 +91,7 @@
         }
     }
 </div>
-
+<AuroraJournalingApp.Components.Pagination.Pagination/>
 @code {
     
     public string moodstring { get; set; } = "";

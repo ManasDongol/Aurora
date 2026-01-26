@@ -10,10 +10,21 @@ using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.Repositories
 {
-    public class UserRepository(SQLiteAsyncConnection _db)
+    public class UserRepository
     {
-     
 
+        SQLiteAsyncConnection _db;
+
+        public UserRepository(AuroraDbContext db)
+        {
+            if (db == null)
+                throw new Exception("AuroraDbContext is NULL");
+
+            if (db._connect == null)
+                throw new Exception("_connect is NULL");
+
+            _db = db._connect;
+        }
         public async Task<List<User>> GetUsersAsync()
         {
             return await _db.Table<User>().ToListAsync();
@@ -42,6 +53,15 @@ namespace AuroraJournalingApp.Repositories
             await _db.DeleteAsync(customer);
             return $"Successfully deleted user with ID: {id}";
 
+        }
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _db.Table<User>().FirstOrDefaultAsync(x => x.email.Equals(email));
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            await _db.UpdateAsync(user);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Maui.ApplicationModel.DataTransfer;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +14,17 @@ namespace AuroraJournalingApp.Components.Pages
         private bool isDark { get; set; }
         protected async override void OnInitialized()
         {
-            string oauthToken = await SecureStorage.Default.GetAsync("loggedin");
+           
+            var oauthToken = await SecureStorage.Default.GetAsync("registered");
+            var user = await SecureStorage.Default.GetAsync("username");
             var value = await SecureStorage.GetAsync("darkmode");
 
             isDark = value == "true";
             await ApplyTheme();
         
-
-       
-
-            if (oauthToken == null)
+            if (oauthToken == null && user == null)
             {
+             
                 navigation.NavigateTo("/signup");
             }
         }
