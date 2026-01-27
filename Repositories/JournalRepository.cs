@@ -109,7 +109,17 @@ namespace AuroraJournalingApp.Repositories
 
         public async Task<Journal> UpdateJournal(Journal val)
         {
-            var journal = await db.FindAsync<Journal>(val.JournalId);
+
+            var journal = await db
+          .Table<Journal>()
+          .FirstOrDefaultAsync(x => x.JournalId.Equals(val.JournalId));
+            if (journal == null)
+            {
+                Debug.WriteLine(val.JournalId);
+                Debug.WriteLine("asdasds");
+                Debug.WriteLine("null journal is null");
+            }
+            ;
             if (journal == null) return null;
 
             journal.Title = val.Title;
@@ -130,9 +140,6 @@ namespace AuroraJournalingApp.Repositories
             if (!string.IsNullOrWhiteSpace(opts.Content))
             {
                 var lowerContent = opts.Content.ToLower();
-                // Simple string search - check if title or content contains the search text
-                // SQLite LINQ support for Contains is case-insensitive by default usually, but we rely on the provider.
-                // Assuming standard SQLite-net behavior where Contains maps to LIKE %...%.
                 query = query.Where(j => j.Title.Contains(opts.Content) || j.Content.Contains(opts.Content));
             }
 

@@ -92,6 +92,8 @@ namespace AuroraJournalingApp.Services
             journal.secondaryMoods = dto.SecondaryMoods;
             journal.tags = dto.Tags;
 
+            
+
             await repo.UpdateJournal(journal);
         }
 

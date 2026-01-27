@@ -242,3 +242,76 @@ select,
 }
 
 
+
+/* ===============================
+   Startup Spinner (Blazor Boot)
+   =============================== */
+
+.startup-loader {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background-color:var(--bg-color);
+}
+
+.startup-spinner {
+    width: 52px;
+    height: 52px;
+    border: 6px solid #0D6EFD;
+    border-top: 6px solid #60a5fa;
+    border-radius: 50%;
+    animation: startup-spin 0.9s linear infinite;
+}
+
+.startup-text {
+    font-size: 1rem;
+    color: #0D6EFD;
+    font-weight: 500;
+}
+
+@keyframes startup-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =====================
+   Global Loading Overlay
+   ===================== */
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #e5e7eb;
+    border-top: 6px solid #6366f1;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+}
+
+.loading-text {
+    margin-top: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

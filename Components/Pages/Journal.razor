@@ -2,6 +2,8 @@
 @page "/home"
 @using AuroraJournalingApp.Components.Calendar
 @using AuroraJournalingApp.Components.RichTextEditor
+@inject LoadingService LoadingService
+
 
 @inject NavigationManager navigator
 
@@ -11,7 +13,7 @@
 
 
 
-        <AuroraJournalingApp.Components.Cards.EntryJournalCard /> 
+        <AuroraJournalingApp.Components.Cards.EntryJournalCard />
 
     }
     else
@@ -33,7 +35,7 @@
 
     private List<string> selectedMoods = new();
     private List<string> selectedTags = new();
-   
+
 
     private bool checkjournal = false;
 

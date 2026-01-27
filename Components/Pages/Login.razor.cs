@@ -21,6 +21,7 @@ namespace AuroraJournalingApp.Components.Pages
 
             isDark = value == "true";
             await ApplyTheme();
+
         
             if (oauthToken == null && user == null)
             {

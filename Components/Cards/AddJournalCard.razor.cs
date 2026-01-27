@@ -60,7 +60,7 @@ namespace AuroraJournalingApp.Components.Cards
 
         public async Task addJournal()
         {
-
+            
             dto.Content = RteValue;
             dto.PrimaryMood = selectedMoods.FirstOrDefault();
             dto.SecondaryMoods = string.Join(",", selectedMoods.Skip(1));
@@ -71,16 +71,45 @@ namespace AuroraJournalingApp.Components.Cards
             {
                 if (editJournal)
                 {
-                    await journal.UpdateJournal(existingJournal.JournalId, dto);
+      
+                    try
+                    {
+                        LoadingService.Show();
+                        await journal.UpdateJournal(existingJournal.JournalId, dto);
+                        await ToastService.ShowSuccess("Journal edited successfully");
+                    }
+                    catch
+                    {
+                        await ToastService.ShowSuccess("Journal could not be edited");
+                    }
+                    finally
+                    {
+                        LoadingService.Hide();
+                    }
                 }
                 else
                 {
-                    await journal.AddNewJournal(dto);
+                    try
+                    {
+                        LoadingService.Show();
+                        await journal.AddNewJournal(dto);
+                        await ToastService.ShowSuccess("Journal added successfully");
+                    }
+                    catch
+                    {
+                        await ToastService.ShowSuccess("Journal could not be added");
+                    }
+                    finally
+                    {
+                        LoadingService.Hide();
+                    }
+                    
                 }
                 nav.NavigateTo("/history"); 
             }
             catch (Exception e)
             {
+                await ToastService.ShowError("Journal could not updated");
                 Console.WriteLine(e);
             }
         }
@@ -91,12 +120,18 @@ namespace AuroraJournalingApp.Components.Cards
             {
                 try
                 {
+                    LoadingService.Show();
                     await journal.DeleteJournal(existingJournal.JournalId);
-                    nav.NavigateTo("/history");
+                    await ToastService.ShowSuccess("Journal deleted successfully");
+                    
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
+                }
+                finally
+                {
+                    LoadingService.Hide();
                 }
             }
         }

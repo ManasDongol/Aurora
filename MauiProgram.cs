@@ -31,7 +31,8 @@ namespace AuroraJournalingApp
             builder.Services.AddMudServices();
             builder.Services.AddMauiBlazorWebView();
 
-
+            builder.Services.AddSingleton<LoadingService>();
+            builder.Services.AddSingleton<ToastService>();
 
             builder.Services.AddScoped<Snackbar>();
             builder.Services.AddScoped<DarkModeState>();

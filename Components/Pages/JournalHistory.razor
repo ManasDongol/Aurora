@@ -4,9 +4,11 @@
 @using AuroraJournalingApp.Models
 @using AuroraJournalingApp.DTOs
 @inject JournalService JournalService
+@inject LoadingService LoadingService
+
 
 <section class="card">
-   
+
     <div class="maincard">
         <div>
             <Calendar OnDateChanged="OnDateSelected" />
@@ -51,7 +53,7 @@
                 <header class="journal-header">
                     <h3 class="journal-title">@journal.Title</h3>
                     <span class="journal-time"> @journal.Created.ToString("d")</span>
-                    
+
                     <button class="bluebutton" @onclick="() => JournalPdf(journal)">
                         Export Journal
                     </button>
@@ -91,12 +93,11 @@
         }
     }
 </div>
-<AuroraJournalingApp.Components.Pagination.Pagination 
-    CurrentPage="@currentPage" 
-    TotalPages="@totalPages" 
-    OnPageChanged="OnPageChanged" />
+<AuroraJournalingApp.Components.Pagination.Pagination CurrentPage="@currentPage"
+                                                      TotalPages="@totalPages"
+                                                      OnPageChanged="OnPageChanged" />
 @code {
-    
+
     public string moodstring { get; set; } = "";
     public string tagstring { get; set; } = "";
     List<AuroraJournalingApp.Models.Journal> journallist = new List<AuroraJournalingApp.Models.Journal>();
@@ -113,13 +114,13 @@
 
     private async Task LoadData()
     {
-        
+
         var count = await JournalService.GetTotalCountAsync();
         totalPages = (int)Math.Ceiling(count / (double)PageSize);
         if (totalPages < 1) totalPages = 1;
 
-        
-        var dto = new PaginationDTO { pageIndex = currentPage - 1 }; 
+
+        var dto = new PaginationDTO { pageIndex = currentPage - 1 };
         journallist = await JournalService.GetPages(dto);
     }
 
@@ -136,10 +137,10 @@
 
     private async Task LoadJournals(DateTime date)
     {
-       
+
         currentPage = 1;
         totalPages = 1;
-        
+
         var start = date.Date;
         var end = date.Date.AddDays(1).AddTicks(-1);
         journallist = await JournalService.GetJournalsByDateRange(start, end);
@@ -156,10 +157,10 @@
 
         if (string.IsNullOrWhiteSpace(SearchText) && string.IsNullOrWhiteSpace(moodstring) && string.IsNullOrWhiteSpace(tagstring))
         {
-             // If search is cleared, reload the full history (paginated)
-             currentPage = 1;
-             await LoadData();
-             return;
+            // If search is cleared, reload the full history (paginated)
+            currentPage = 1;
+            await LoadData();
+            return;
         }
 
         // For search results, we show all matches (disable pagination)

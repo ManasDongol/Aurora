@@ -67,16 +67,19 @@ namespace AuroraJournalingApp.Components.Cards
                 if (editJournal)
                 {
                     await journal.UpdateJournal(existingJournal.JournalId, dto);
+                   
                 }
                 else
                 {
                     await journal.AddNewJournal(dto);
                 }
+               
                 nav.NavigateTo("/history");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                await ToastService.ShowError("Journal could not be edited ");
             }
         }
     }

@@ -1,0 +1,37 @@
+﻿@inject LoadingService LoadingService
+
+@if (IsVisible)
+{
+    <div class="loading-overlay">
+        <div class="spinner"></div>
+        @if (!string.IsNullOrEmpty(Text))
+        {
+            <p class="loading-text">@Text</p>
+        }
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string? Text { get; set; }
+
+    bool IsVisible;
+
+    protected override void OnInitialized()
+    {
+        IsVisible = LoadingService.IsLoading;
+        LoadingService.OnLoadingChanged += Toggle;
+    }
+
+    void Toggle(bool show)
+    {
+        IsVisible = show;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        LoadingService.OnLoadingChanged -= Toggle;
+    }
+}

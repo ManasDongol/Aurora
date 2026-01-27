@@ -2,7 +2,9 @@
 @using MudBlazor
 @inject ISnackbar Snackbar
 @inject AuroraJournalingApp.Utils.DarkModeState DarkModeState
-
+@using Syncfusion.Blazor.Notifications
+@inject AuroraJournalingApp.Services.ToastService ToastService
+@using AuroraJournalingApp.Components.Spinner;
 
 
 <MudPopoverProvider />
@@ -16,6 +18,14 @@
     <NavMenu />
 </div>
 
+<LoadingOverlay Text="Please wait…" />
+
+<SfToast @ref="ToastObj"
+         Timeout="3000">
+    <ToastPosition X="@ToastPosition"></ToastPosition>
+</SfToast>
+
+
 <div class="mainContent">
     @Body
 </div>
@@ -25,10 +35,12 @@
 
 @code {
     private bool _open = false;
+    private string ToastPosition = "Right";
 
     public static bool darkmodetoggler = false;
 
     private bool IsDarkMode = false;
+    SfToast? ToastObj;
 
     private void ToggleDrawer()
     {
@@ -38,6 +50,17 @@
     protected override void OnInitialized()
     {
         DarkModeState.OnChange += StateHasChanged;
+        ToastService.OnShow += ShowToast;
+    }
+
+    async Task ShowToast(ToastMessageDTO msg)
+    {
+        await ToastObj!.ShowAsync(new ToastModel
+        {
+            Title = msg.Title,
+            Content = msg.Content,
+            CssClass = msg.CssClass
+        });
     }
 
     public void Dispose()

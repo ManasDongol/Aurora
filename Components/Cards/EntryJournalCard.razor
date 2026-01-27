@@ -1,8 +1,11 @@
-﻿<h3>Your today's entry</h3>
+﻿@inject ToastService ToastService
+@inject LoadingService LoadingService
+
+<h3>Your today's entry</h3>
 
 @if (todayEntry is null)
 {
-    <p>Loading today’s entry…</p>
+    <AddJournalCard />
 }
 else
 {
@@ -23,56 +26,56 @@ else
                 </div>
             </header>
 
-        
-                @if (!string.IsNullOrWhiteSpace(todayEntry.Content))
+
+            @if (!string.IsNullOrWhiteSpace(todayEntry.Content))
+            {
+                @((MarkupString)todayEntry.Content)
+            }
+            else
+            {
+                <em>No content</em>
+            }
+        </div>
+
+        <div class="meta-section">
+            <div class="chips-row">
+                @if (!string.IsNullOrWhiteSpace(todayEntry.primaryMood))
                 {
-                    @((MarkupString)todayEntry.Content)
+                    <span class="chip mood-primary">@todayEntry.primaryMood</span>
                 }
-                else
+
+                @if (!string.IsNullOrWhiteSpace(todayEntry.secondaryMoods))
                 {
-                    <em>No content</em>
+                    foreach (var mood in todayEntry.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <span class="chip mood-secondary">@mood.Trim()</span>
+                    }
                 }
-            </div> 
-
-            <div class="meta-section">
-                <div class="chips-row">
-                    @if (!string.IsNullOrWhiteSpace(todayEntry.primaryMood))
-                    {
-                        <span class="chip mood-primary">@todayEntry.primaryMood</span>
-                    }
-
-                    @if (!string.IsNullOrWhiteSpace(todayEntry.secondaryMoods))
-                    {
-                        foreach (var mood in todayEntry.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            <span class="chip mood-secondary">@mood.Trim()</span>
-                        }
-                    }
-                </div>
-
-                <div class="chips-row">
-                    @if (!string.IsNullOrWhiteSpace(todayEntry.tags))
-                    {
-                        foreach (var tag in todayEntry.tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            <span class="chip tag">@tag.Trim()</span>
-                        }
-                    }
-                </div>
-
-                <button class="edit-entry" @onclick="() => openEdit = true">
-                    Update Journal
-                </button>
-                <button class="negative-button" @onclick="deleteAsync">
-                    Delete Journal
-                </button>
             </div>
-      
+
+            <div class="chips-row">
+                @if (!string.IsNullOrWhiteSpace(todayEntry.tags))
+                {
+                    foreach (var tag in todayEntry.tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        <span class="chip tag">@tag.Trim()</span>
+                    }
+                }
+            </div>
+
+            <button class="edit-entry" @onclick="() => openEdit = true">
+                Update Journal
+            </button>
+            <button class="negative-button" @onclick="deleteAsync">
+                Delete Journal
+            </button>
+        </div>
+
     }
     else
     {
-       
-        <AddJournalCard/>
+
+        <AddJournalCard />
     }
 }
 

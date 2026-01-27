@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using Syncfusion.Blazor.Notifications
+@inject AuroraJournalingApp.Services.ToastService ToastService
+@using AuroraJournalingApp.Components.Spinner;
 <MudThemeProvider />
 <MudPopoverProvider />
 <MudDialogProvider />
@@ -8,12 +11,37 @@
 
 <MudLayout>
     <MudMainContent>
+        <LoadingOverlay Text="Please wait…" />
         <div class="empty-layout-root">
             @Body
         </div>
-      
+
+        <SfToast @ref="ToastObj"
+                 Timeout="3000">
+            <ToastPosition X="@ToastPosition"></ToastPosition>
+
+        </SfToast>
+
+
     </MudMainContent>
 </MudLayout>
 @code {
+    private string ToastPosition = "Right";
+    SfToast? ToastObj;
 
+    protected override void OnInitialized()
+    {
+
+        ToastService.OnShow += ShowToast;
+    }
+
+    async Task ShowToast(ToastMessageDTO msg)
+    {
+        await ToastObj!.ShowAsync(new ToastModel
+        {
+            Title = msg.Title,
+            Content = msg.Content,
+            CssClass = msg.CssClass
+        });
+    }
 }
