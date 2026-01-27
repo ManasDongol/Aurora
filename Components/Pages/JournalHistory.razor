@@ -91,16 +91,42 @@
         }
     }
 </div>
-<AuroraJournalingApp.Components.Pagination.Pagination/>
+<AuroraJournalingApp.Components.Pagination.Pagination 
+    CurrentPage="@currentPage" 
+    TotalPages="@totalPages" 
+    OnPageChanged="OnPageChanged" />
 @code {
     
     public string moodstring { get; set; } = "";
     public string tagstring { get; set; } = "";
     List<AuroraJournalingApp.Models.Journal> journallist = new List<AuroraJournalingApp.Models.Journal>();
 
+    // Pagination size
+    private int currentPage = 1;
+    private int totalPages = 1;
+    private const int PageSize = 5;
+
     protected override async Task OnInitializedAsync()
     {
-        await LoadJournals(DateTime.Today);
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        
+        var count = await JournalService.GetTotalCountAsync();
+        totalPages = (int)Math.Ceiling(count / (double)PageSize);
+        if (totalPages < 1) totalPages = 1;
+
+        
+        var dto = new PaginationDTO { pageIndex = currentPage - 1 }; 
+        journallist = await JournalService.GetPages(dto);
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        await LoadData();
     }
 
     private async Task OnDateSelected(DateTime date)
@@ -110,6 +136,10 @@
 
     private async Task LoadJournals(DateTime date)
     {
+       
+        currentPage = 1;
+        totalPages = 1;
+        
         var start = date.Date;
         var end = date.Date.AddDays(1).AddTicks(-1);
         journallist = await JournalService.GetJournalsByDateRange(start, end);
@@ -124,14 +154,17 @@
             Tags = !string.IsNullOrWhiteSpace(tagstring) ? new List<string> { tagstring } : null
         };
 
-     
         if (string.IsNullOrWhiteSpace(SearchText) && string.IsNullOrWhiteSpace(moodstring) && string.IsNullOrWhiteSpace(tagstring))
         {
-             
-             await LoadJournals(DateTime.Today);
+             // If search is cleared, reload the full history (paginated)
+             currentPage = 1;
+             await LoadData();
              return;
         }
 
+        // For search results, we show all matches (disable pagination)
+        currentPage = 1;
+        totalPages = 1;
         journallist = await JournalService.SearchAsync(opts);
     }
 }

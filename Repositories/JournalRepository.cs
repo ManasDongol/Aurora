@@ -182,6 +182,11 @@ namespace AuroraJournalingApp.Repositories
                            .Take(pagesize)
                            .ToListAsync();
         }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await db.Table<Journal>().CountAsync();
+        }
         
 
     }

@@ -116,5 +116,10 @@ namespace AuroraJournalingApp.Services
         {
             return await repo.GetPages(opts);
         }
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await repo.GetTotalCountAsync();
+        }
     }
 }
