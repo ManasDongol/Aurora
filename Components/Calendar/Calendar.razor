@@ -2,23 +2,23 @@
 
 <h3>Calendar</h3>
 
+<SfCalendar TValue="DateTime" Value="selectedDate"  ValueChanged="OnValueChanged" Max="@MaxDate" />
 
-<SfCalendar TValue="DateTime" Value="selectedDate" ValueChanged="OnValueChanged" Max="@MaxDate"/>
-<span >@selectedDate</span>
 <style>
     .e-calendar {
         background-color: var(--background-color);
-   
         color: var(--text-color);
     }
-    .e-calendar .e-header .e-title, .e-bigger.e-small .e-calendar .e-header .e-title {
-        color: var(--text-color);
-        font-size: 20px;
-}
 
+        .e-calendar .e-header .e-title,
+        .e-bigger.e-small .e-calendar .e-header .e-title {
+            color: var(--text-color);
+            font-size: 20px;
+        }
 </style>
 
 @code {
+
     private DateTime selectedDate = DateTime.Today;
     public DateTime MaxDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 

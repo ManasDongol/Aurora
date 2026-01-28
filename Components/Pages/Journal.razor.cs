@@ -12,8 +12,7 @@ namespace AuroraJournalingApp.Components.Pages
         bool entrystatus = false;
         protected override async Task OnInitializedAsync()
         {
-           
-
+        
             var checkEntry = await service.GetJournalByDate(DateTime.Now.Date);
             if (checkEntry != null)
             {

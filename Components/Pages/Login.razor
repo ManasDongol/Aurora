@@ -10,8 +10,10 @@
 
 
 <div class="login-container">
+
+   
     <div class="card" style="min-width:400px;">
-        <h2> Welcome Back !</h2>
+        <h2> Welcome to Aurora !</h2>
         <EditForm Model="userModel" OnValidSubmit="OnSubmit">
             <DataAnnotationsValidator />
             <ValidationSummary />
@@ -29,10 +31,10 @@
                 <InputText @bind-Value="Password" Type="password" class="input-field" placeholder="Enter password" />
             </div>
 
-            <div>
-                Forgot password? change your <NavLink href="/passwordchange">password</NavLink>
+            <div style="margin-bottom:10px;">
+                Forgot password? click<NavLink href="/passwordchange">here</NavLink>
             </div>
-            <button type="submit" class="bluebutton">Log In</button>
+            <button type="submit" class="bluebutton" >Log In</button>
         </EditForm>
     </div>
 </div>
@@ -61,17 +63,20 @@
 
     public async Task OnSubmit()
     {
-
+        LoadingService.Show();
         var User = await SecureStorage.GetAsync("Username");
         var Pass = await SecureStorage.GetAsync("Password");
+        var email = await SecureStorage.GetAsync("Email");
 
         if (Username.Equals(User) && Password.Equals(Pass))
         {
             try
             {
-                LoadingService.Show();
+
                 await SecureStorage.Default.SetAsync("loggedin", "authorized");
                 await ToastService.ShowSuccess("Logged in successfully!");
+                System.Diagnostics.Debug.WriteLine(email);
+                System.Diagnostics.Debug.WriteLine(Pass);
                 navigation.NavigateTo("/home");
             }
             catch
@@ -91,6 +96,7 @@
             await ToastService.ShowError("Failed to login, try again.");
             Username = "";
             Password = "";
+            LoadingService.Hide();
         }
     }
 }

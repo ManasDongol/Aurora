@@ -35,9 +35,13 @@ body[data-theme="dark"] {
     --link-color: #60a5fa;
     --navbarhover-color: #ffffff;
     --navbarhovertext-color: #1e1e1e;
-    --bluebutton-color: #39b8b1;
+    --bluebutton-color: #0D6EFD;
     --negative-color: #ff145f;
     --negative-hover: #4f2835;
+    --icon-color: #c2c8d4;
+    --hover-color: rgba(255,255,255,0.08);
+    --active-color: rgba(255,255,255,0.15);
+    --accent-color: #7aa2ff;
 }
 
 /* =====================================================

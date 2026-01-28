@@ -23,21 +23,23 @@ namespace AuroraJournalingApp.Components.Cards
         bool editJournal = false;
         Journal existingJournal;
 
-       
+        bool isLoaded;
+
+
 
         protected override async Task OnInitializedAsync()
         {
+            //checking if user has already entered a journal
             var checkEntry = await journal.GetJournalByDate(DateTime.Now.Date);
+
+           //if user already has an entry
             if (checkEntry != null)
             {
+                //Initializing all the card/form variables
                 existingJournal = checkEntry;
                 editJournal = true;
 
-        
                 dto.Title = checkEntry.Title;
-                // RteValue = checkEntry.Content;
-
-                Debug.WriteLine(checkEntry.Content);
                 dto.Content = checkEntry.Content ?? string.Empty;
 
                 if (!string.IsNullOrEmpty(checkEntry.primaryMood))
@@ -55,13 +57,15 @@ namespace AuroraJournalingApp.Components.Cards
                     var t = checkEntry.tags.Split(',', StringSplitOptions.RemoveEmptyEntries);
                     foreach (var tag in t) selectedTags.Add(tag.Trim());
                 }
+               
             }
+            isLoaded = true;
         }
 
         public async Task addJournal()
         {
             
-            dto.Content = RteValue;
+           
             dto.PrimaryMood = selectedMoods.FirstOrDefault();
             dto.SecondaryMoods = string.Join(",", selectedMoods.Skip(1));
             dto.Tags = string.Join(",", selectedTags);
@@ -123,6 +127,7 @@ namespace AuroraJournalingApp.Components.Cards
                     LoadingService.Show();
                     await journal.DeleteJournal(existingJournal.JournalId);
                     await ToastService.ShowSuccess("Journal deleted successfully");
+                    nav.NavigateTo("/history");
                     
                 }
                 catch (Exception e)

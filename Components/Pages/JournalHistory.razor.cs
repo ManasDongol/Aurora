@@ -4,6 +4,7 @@ using AuroraJournalingApp.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,9 @@ namespace AuroraJournalingApp.Components.Pages
         // Pagination size
         private int currentPage = 1;
         private int totalPages = 1;
-        private const int PageSize = 5;
+        private const int PageSize = 2;
+
+     
 
 
         //searchinh
@@ -30,6 +33,10 @@ namespace AuroraJournalingApp.Components.Pages
         private List<string> Tags   { get; set; } = new();
         private CancellationTokenSource _cts;
 
+        private bool IsSearching =>
+    !string.IsNullOrWhiteSpace(SearchText) ||
+    !string.IsNullOrWhiteSpace(moodstring) ||
+    !string.IsNullOrWhiteSpace(tagstring);
 
         protected override async Task OnInitializedAsync()
         {
@@ -56,20 +63,31 @@ namespace AuroraJournalingApp.Components.Pages
         private async Task LoadData()
         {
 
-            var count = await JournalService.GetTotalCountAsync();
-            totalPages = (int)Math.Ceiling(count / (double)PageSize);
-            if (totalPages < 1) totalPages = 1;
+            var dto = new PaginationDTO
+            {
+                pageIndex = currentPage - 1,
+                pageSize = PageSize
+            };
 
-
-            var dto = new PaginationDTO { pageIndex = currentPage - 1 };
             journallist = await JournalService.GetPages(dto);
+
         }
 
         private async Task OnPageChanged(int page)
         {
             currentPage = page;
-            await LoadData();
+
+            bool hasFilters = !string.IsNullOrWhiteSpace(SearchText) ||
+                              !string.IsNullOrWhiteSpace(moodstring) ||
+                              !string.IsNullOrWhiteSpace(tagstring);
+
+            if (hasFilters)
+                await PerformSearch();
+            else
+                await LoadData();
         }
+
+
 
         private async Task OnDateSelected(DateTime date)
         {
@@ -87,28 +105,41 @@ namespace AuroraJournalingApp.Components.Pages
             journallist = await JournalService.GetJournalsByDateRange(start, end);
         }
 
+
+
         private async Task PerformSearch()
         {
-            var opts = new SearchOptions
-            {
-                Content = SearchText,
-                Mood = !string.IsNullOrWhiteSpace(moodstring) ? new List<string> { moodstring } : null,
-                Tags = !string.IsNullOrWhiteSpace(tagstring) ? new List<string> { tagstring } : null
-            };
+            // Only compute search mode
+            bool hasFilters = !string.IsNullOrWhiteSpace(SearchText) ||
+                              !string.IsNullOrWhiteSpace(moodstring) ||
+                              !string.IsNullOrWhiteSpace(tagstring);
 
-            if (string.IsNullOrWhiteSpace(SearchText) && string.IsNullOrWhiteSpace(moodstring) && string.IsNullOrWhiteSpace(tagstring))
+            currentPage = 1;
+
+            if (!hasFilters)
             {
-                // If search is cleared, reload the full history (paginated)
-                currentPage = 1;
                 await LoadData();
                 return;
             }
 
-            // For search results, we show all matches (disable pagination)
-            currentPage = 1;
-            totalPages = 1;
+            var opts = new SearchOptions
+            {
+                Content = SearchText,
+                Mood = converter(moodstring),
+                Tags = converter(tagstring),
+                PageIndex = currentPage - 1,
+                PageSize = PageSize
+            };
+
+            // Get total count first
+            var total = await repo.GetSearchCountAsync(opts);
+            totalPages = (int)Math.Ceiling(total / (double)PageSize);
+
+            // Load first page
             journallist = await JournalService.SearchAsync(opts);
         }
+
+
         private async Task RunSearch()
         {
 

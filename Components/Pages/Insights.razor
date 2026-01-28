@@ -3,10 +3,10 @@
 @using AuroraJournalingApp.Models
 @inject JournalService JournalService
 
-<button @onclick="pdfgenerator">Generate PDF</button>
-
+ <button class="bluebutton" style="display:flex;margin-left:auto;margin-right:10px;" @onclick="pdfgenerator">Generate PDF</button>
+ <span style="font-size: 30px;">Analytics</span>
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary">Analytics</MudText>
+    
     
     <MudGrid Class="mb-4">
         <MudItem xs="12" sm="6" md="3">
@@ -37,7 +37,7 @@
             <MudCard Elevation="3" Class="rounded-lg">
                 <MudCardContent>
                     <MudText Typo="Typo.subtitle1">Top Mood</MudText>
-                    <MudText Typo="Typo.h4" Color="Color.Warning">@MostFrequentMood</MudText>
+                    <MudText Typo="Typo.h2" Color="Color.Warning">@MostFrequentMood</MudText>
                 </MudCardContent>
             </MudCard>
         </MudItem>

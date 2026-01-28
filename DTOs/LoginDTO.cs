@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AuroraJournalingApp.DTOs
 {
-    internal class LoginDTO
+    public class LoginDTO
     {
         string username;
         string password;

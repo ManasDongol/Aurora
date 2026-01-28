@@ -11,7 +11,7 @@ else
 {
     @if (!openEdit)
     {
-        <div class="journal-entry-card">
+        <div class="card">
             <header class="journal-header">
                 <h3 class="journal-title">@todayEntry.Title</h3>
 
@@ -21,7 +21,7 @@ else
                         @todayEntry.Created.ToString("g")
                     </span>
                 }
-                <div>
+                <div class="bluebutton">
                     Export Journal
                 </div>
             </header>
@@ -35,42 +35,42 @@ else
             {
                 <em>No content</em>
             }
-        </div>
 
-        <div class="meta-section">
-            <div class="chips-row">
-                @if (!string.IsNullOrWhiteSpace(todayEntry.primaryMood))
-                {
-                    <span class="chip mood-primary">@todayEntry.primaryMood</span>
-                }
 
-                @if (!string.IsNullOrWhiteSpace(todayEntry.secondaryMoods))
-                {
-                    foreach (var mood in todayEntry.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            <div class="meta-section">
+                <div class="chips-row">
+                    @if (!string.IsNullOrWhiteSpace(todayEntry.primaryMood))
                     {
-                        <span class="chip mood-secondary">@mood.Trim()</span>
+                        <span class="chip mood-primary">@todayEntry.primaryMood</span>
                     }
-                }
-            </div>
 
-            <div class="chips-row">
-                @if (!string.IsNullOrWhiteSpace(todayEntry.tags))
-                {
-                    foreach (var tag in todayEntry.tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    @if (!string.IsNullOrWhiteSpace(todayEntry.secondaryMoods))
                     {
-                        <span class="chip tag">@tag.Trim()</span>
+                        foreach (var mood in todayEntry.secondaryMoods.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <span class="chip mood-secondary">@mood.Trim()</span>
+                        }
                     }
-                }
+                </div>
+
+                <div class="chips-row">
+                    @if (!string.IsNullOrWhiteSpace(todayEntry.tags))
+                    {
+                        foreach (var tag in todayEntry.tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            <span class="chip tag">@tag.Trim()</span>
+                        }
+                    }
+                </div>
+
+                <button class="bluebutton" @onclick="() => openEdit = true">
+                    Update Journal
+                </button>
+                <button class="negative-button" @onclick="deleteAsync">
+                    Delete Journal
+                </button>
             </div>
-
-            <button class="edit-entry" @onclick="() => openEdit = true">
-                Update Journal
-            </button>
-            <button class="negative-button" @onclick="deleteAsync">
-                Delete Journal
-            </button>
         </div>
-
     }
     else
     {

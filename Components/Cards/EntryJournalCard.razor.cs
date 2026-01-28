@@ -17,11 +17,22 @@ namespace AuroraJournalingApp.Components.Cards
         [Inject]
         public NavigationManager nav { get; set; }
 
-        Journal todayEntry=new();
+        Journal todayEntry = new Journal
+        {
+            Title = "",
+            Content = ""
+        };
         protected override async Task OnInitializedAsync()
         {
-            todayEntry = await service.GetJournalByDate(DateTime.Now.Date);
-            
+            var loaded = await service.GetJournalByDate(DateTime.Now.Date);
+
+            if (loaded != null)
+            {
+                todayEntry.JournalId = loaded.JournalId;
+                todayEntry.Title = loaded.Title;
+                todayEntry.Content = loaded.Content;
+            }
+
 
         }
 
@@ -33,7 +44,11 @@ namespace AuroraJournalingApp.Components.Cards
                 LoadingService.Show();
                 await service.DeleteJournal(todayEntry.JournalId);
                 await ToastService.ShowSuccess("Journal deleted successfully");
-                todayEntry = null;
+                todayEntry.JournalId = "";
+                todayEntry.Title = "";
+                todayEntry.Content = "";
+                todayEntry.secondaryMoods = "";
+                todayEntry.primaryMood = "";
 
 
                 StateHasChanged();

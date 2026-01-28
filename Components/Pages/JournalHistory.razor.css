@@ -132,9 +132,16 @@
 .maincard{
     display:flex;
     justify-content:space-evenly;
+    
 }
 
 .card{
     max-width:800px;
     margin-left:40px;
+    
+}
+
+.layout{
+    margin-left:30px;
+    margin-top:20px;
 }

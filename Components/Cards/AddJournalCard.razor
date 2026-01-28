@@ -20,90 +20,120 @@
 
         <div class="form-group">
             <label class="label">Body</label>
-            <SfRichTextEditor @bind-Value="RteValue" Placeholder="Write your journal..." />
+            @if (isLoaded)
+            {
+
+
+                <SfRichTextEditor @bind-Value="@dto.Content" Placeholder="Write your journal..." />
+            }
 
         </div>
+        <div style="display:flex;justify-content:space-between">
 
-        <label class="label">Moods</label>
-        <div class="dropdown @(isMoodOpen ? "open" : "")">
-            <div class="dropdown-btn" @onclick="ToggleMood">
-                <span class="selected-text">
-                    @(selectedMoods.Any()
+            <div>
+                <label class="label">Moods</label>
+                <div class="dropdown @(isMoodOpen ? "open" : "")">
+                    <div class="dropdown-btn" @onclick="ToggleMood">
+                        <span class="selected-text">
+                            @(selectedMoods.Any()
                         ? string.Join(", ", selectedMoods)
                         : "Select moods (max 3)")
-                </span>
+                        </span>
+                    </div>
+                    <div class="dropdown-content">
+                        @foreach (var mood in MoodOptions)
+                        {
+                            <label>
+                                <input type="checkbox"
+                                       checked="@selectedMoods.Contains(mood)"
+                                       @onchange="() => ToggleMoodSelection(mood)" />
+                                @mood
+                            </label>
+                        }
+                    </div>
+                </div>
             </div>
-            <div class="dropdown-content">
-                @foreach (var mood in MoodOptions)
-                {
-                    <label>
-                        <input type="checkbox"
-                               checked="@selectedMoods.Contains(mood)"
-                               @onchange="() => ToggleMoodSelection(mood)" />
-                        @mood
-                    </label>
-                }
-            </div>
-        </div>
+            <div>
 
-
-        <label class="label">Tags</label>
-        <div class="dropdown @(isTagOpen ? "open" : "")">
-            <div class="dropdown-btn" @onclick="ToggleTag">
-                <span class="selected-text">
-                    @(selectedTags.Any()
+                <label class="label">Tags</label>
+                <div class="dropdown @(isTagOpen ? "open" : "")">
+                    <div class="dropdown-btn" @onclick="ToggleTag">
+                        <span class="selected-text">
+                            @(selectedTags.Any()
                         ? string.Join(", ", selectedTags)
                         : "Select tags (max 5)")
-                </span>
+                        </span>
+                    </div>
+                    <div class="dropdown-content">
+                        @foreach (var tag in TagOptions)
+                        {
+                            <label>
+                                <input type="checkbox"
+                                       checked="@selectedTags.Contains(tag)"
+                                       @onchange="() => ToggleTagSelection(tag)" />
+                                @tag
+                            </label>
+                        }
+                    </div>
+                </div>
             </div>
-            <div class="dropdown-content">
-                @foreach (var tag in TagOptions)
-                {
-                    <label>
-                        <input type="checkbox"
-                               checked="@selectedTags.Contains(tag)"
-                               @onchange="() => ToggleTagSelection(tag)" />
-                        @tag
-                    </label>
-                }
-            </div>
-        </div>
 
-        <div class="actions">
-            <button class="primary-btn" type="submit">
-                @(editJournal ? "Update Entry" : "Save Entry")
-            </button>
+            <div class="actions">
+                <button class="bluebutton" type="submit">
+                    @(editJournal ? "Update Entry" : "Save Entry")
+                </button>
+            </div>
         </div>
+       
+
     </EditForm>
 
 
 </section>
 <style>
-
-
-    .e-richtexteditor .e-rte-content .e-content,
-    .e-richtexteditor .e-source-content .e-content {
-        font-size: 20px;
-        border-color: var(--surface-color);
+ 
+    .e-richtexteditor .e-rte-container {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-color);
     }
-
-
+    .e-richtexteditor ::placeholder {
+        color: var(--text-color);
+    }
+    
     .e-richtexteditor .e-rte-content,
     .e-richtexteditor .e-source-content {
         background: var(--bg-color);
         color: var(--text-color);
     }
+
+        .e-richtexteditor .e-rte-content .e-content,
+        .e-richtexteditor .e-source-content .e-content {
+            font-size: 18px;
+        }
+
+
+
+
 </style>
 @code {
 
     bool isMoodOpen;
     bool isTagOpen;
 
+
+
     List<string> selectedMoods = new();
     List<string> selectedTags = new();
 
+
     public string RteValue { get; set; } = "";
-    public JournalDTO dto = new();
+    public JournalDTO dto = new()
+    {
+        Content = "",
+        Title = ""
+    };
+
 
     private async Task OnRteValueChanged(string value)
     {

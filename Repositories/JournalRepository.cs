@@ -131,62 +131,111 @@ namespace AuroraJournalingApp.Repositories
              await db.UpdateAsync(journal);
              return journal;
         }
+        public async Task<int> GetSearchCountAsync(SearchOptions opts)
+        {
+            var query = db.Table<Journal>();
 
+            // DB filters
+            if (!string.IsNullOrWhiteSpace(opts.Content))
+            {
+                query = query.Where(j =>
+                    j.Title.Contains(opts.Content) ||
+                    j.Content.Contains(opts.Content));
+            }
+
+            if (opts.From != null)
+            {
+                query = query.Where(j => j.Created >= opts.From.Value);
+            }
+
+            if (opts.To != null)
+            {
+                query = query.Where(j => j.Created <= opts.To.Value);
+            }
+
+            // Execute DB part
+            var results = await query.ToListAsync();
+
+            // In-memory filters
+            if (opts.Mood?.Any() == true)
+            {
+                results = results
+                    .Where(j => opts.Mood.Contains(j.primaryMood))
+                    .ToList();
+            }
+
+            if (opts.Tags?.Any() == true)
+            {
+                results = results
+                    .Where(j =>
+                        !string.IsNullOrEmpty(j.tags) &&
+                        opts.Tags.Any(t => j.tags.Contains(t)))
+                    .ToList();
+            }
+
+            return results.Count;
+        }
 
         public async Task<List<Journal>> SearchAsync(SearchOptions opts)
         {
             var query = db.Table<Journal>();
 
+            // DB filters
             if (!string.IsNullOrWhiteSpace(opts.Content))
             {
-                var lowerContent = opts.Content.ToLower();
-                query = query.Where(j => j.Title.Contains(opts.Content) || j.Content.Contains(opts.Content));
+                query = query.Where(j =>
+                    j.Title.Contains(opts.Content) ||
+                    j.Content.Contains(opts.Content));
             }
 
             if (opts.From != null)
             {
-                var fromDate = opts.From.Value;
-                query = query.Where(j => j.Created >= fromDate);
+                query = query.Where(j => j.Created >= opts.From.Value);
             }
 
             if (opts.To != null)
             {
-                var toDate = opts.To.Value;
-                query = query.Where(j => j.Created <= toDate);
+                query = query.Where(j => j.Created <= opts.To.Value);
             }
 
+            // Execute DB query
+            var results = await query.ToListAsync();
+
+            // In-memory filters
             if (opts.Mood?.Any() == true)
             {
-                // Filter mood in memory
-                var interimResults = await query.ToListAsync();
-                interimResults = interimResults.Where(j => opts.Mood.Contains(j.primaryMood)).ToList();
-                
-                // If we also have tags, filter them too
-                if (opts.Tags?.Any() == true)
-                {
-                     interimResults = interimResults.Where(j => !string.IsNullOrEmpty(j.tags) && opts.Tags.Any(t => j.tags.Contains(t))).ToList();
-                }
-
-                return interimResults.OrderByDescending(j => j.Created).ToList();
+                results = results
+                    .Where(j => opts.Mood.Contains(j.primaryMood))
+                    .ToList();
             }
-            
+
             if (opts.Tags?.Any() == true)
             {
-                 var interimResults = await query.ToListAsync();
-                 return interimResults.Where(j => !string.IsNullOrEmpty(j.tags) && opts.Tags.Any(t => j.tags.Contains(t))).OrderByDescending(j => j.Created).ToList();
+                results = results
+                    .Where(j =>
+                        !string.IsNullOrEmpty(j.tags) &&
+                        opts.Tags.Any(t => j.tags.Contains(t)))
+                    .ToList();
             }
 
-            return await query.OrderByDescending(j => j.Created).ToListAsync();
+            // Paging LAST
+            int offset = opts.PageIndex * opts.PageSize;
+
+            return results
+                .OrderByDescending(j => j.Created)
+                .Skip(offset)
+                .Take(opts.PageSize)
+                .ToList();
         }
 
         public async Task<List<Journal>> GetPages(PaginationDTO dto)
         {
-            int pagesize = 5;
-            int offset = pagesize * dto.pageIndex;
+            int offset = dto.pageSize * dto.pageIndex;
+
             return await db.Table<Journal>()
                            .OrderByDescending(j => j.Created)
                            .Skip(offset)
-                           .Take(pagesize)
+                           .Take(dto.pageSize)
                            .ToListAsync();
         }
 

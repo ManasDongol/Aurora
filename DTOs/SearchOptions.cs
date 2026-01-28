@@ -14,5 +14,8 @@ namespace AuroraJournalingApp.DTOs
         public List<string>? Mood { get; set; }
       
         public List<string>? Tags { get; set; }
+
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
     }
 }
